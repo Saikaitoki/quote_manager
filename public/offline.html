@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Offline - Quote Manager</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; background: #f8f9fa; color: #333; }
+    h1 { font-size: 24px; margin-bottom: 20px; }
+    p { color: #666; }
+    .btn { display: inline-block; padding: 10px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 4px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>現在オフラインです</h1>
+  <p>インターネット接続を確認してください。<br>接続が回復すると自動的に再読み込みされます。</p>
+  <a href="/" class="btn">再読み込み</a>
+  <script>
+    window.addEventListener('online', () => window.location.reload());
+  </script>
+</body>
+</html>

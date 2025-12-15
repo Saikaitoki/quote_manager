@@ -1,0 +1,65 @@
+<div class="quote-item-card mb-3 p-3 shadow-sm rounded"
+     data-item="<%= f.object.to_json %>">
+
+  <div class="d-flex flex-column gap-0">
+    <!-- 1行目: 商品コード -->
+    <div class="d-flex align-items-center">
+      <span class="text-muted small me-1">商品コード:</span>
+      <span class="product_cd_cell font-monospace">
+        <%= f.object.product_cd.presence || "" %>
+      </span>
+    </div>
+
+    <!-- 2行目: 商品名 -->
+    <div class="d-flex align-items-center">
+      <span class="text-muted small me-1">商品名:</span>
+      <span class="product_name_cell fw-bold flex-grow-1 text-truncate">
+        <%= f.object.product_name.presence || "" %>
+      </span>
+    </div>
+
+    <!-- 3行目: 差引実・数量 -->
+    <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center me-4">
+        <span class="text-muted small me-2">差引実:</span>
+        <span class="difference_actual_cell fw-bold">
+          <%= f.object.difference_actual.presence || "" %>
+        </span>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="text-muted small me-2">数量:</span>
+        <span class="quantity_cell fw-bold">
+          <%= f.object.quantity.presence || "" %>
+        </span>
+      </div>
+    </div>
+
+    <!-- 4行目: 掛率・削除ボタン -->
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <span class="text-muted small me-2">掛率:</span>
+        <span class="rate_cell fw-bold">
+          <%= f.object.rate.presence || "" %>
+        </span>%
+      </div>
+      <a href="#" class="btn btn-outline-danger btn-sm px-4 rounded-1 remove-item">削除</a>
+    </div>
+  </div>
+
+  <!-- hidden fields -->
+  <%= f.hidden_field :product_cd %>
+  <%= f.hidden_field :product_name %>
+  <%= f.hidden_field :difference_actual %>
+  <%= f.hidden_field :quantity %>
+  <%= f.hidden_field :unit_price %>
+  <%= f.hidden_field :rate %>
+  <%= f.hidden_field :lower_price %>
+  <%= f.hidden_field :amount %>
+  <%= f.hidden_field :upper_price %>
+  <%= f.hidden_field :catalog_no %>
+  <%= f.hidden_field :special_upper_price %>
+  <%= f.hidden_field :inner_box_count %>
+  <%= f.hidden_field :page %>
+  <%= f.hidden_field :row %>
+  <%= f.hidden_field :package %>
+</div>

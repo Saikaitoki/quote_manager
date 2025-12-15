@@ -1,0 +1,175 @@
+<!-- app/views/quotes/_item_modal.html.erb -->
+
+<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"><!-- 少し小さめ -->
+    <div class="modal-content">
+
+      <!-- ヘッダー -->
+      <div class="modal-header py-2">
+        <h5 class="modal-title fw-bold mb-0" id="itemModalLabel">商品明細の追加 / 編集</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+      </div>
+
+      <!-- ボディ -->
+      <div class="modal-body py-3">
+        <div class="border rounded p-2">
+
+          <!-- 商品コード（上部に単独配置） -->
+          <div class="row g-2 mb-2">
+            <div class="col-12 col-md-5">
+              <label for="item_product_cd" class="form-label mb-1">商品コード</label>
+              <div class="input-group input-group-sm">
+                <input type="text"
+                       class="form-control"
+                       id="item_product_cd"
+                       autocomplete="off">
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        id="lookupProductBtn">
+                  検索
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 数量 ＋ 掛率 -->
+          <div class="row g-2 mb-2">
+            <div class="col-6 col-md-3">
+              <label for="item_quantity" class="form-label mb-1">数量</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_quantity"
+                     autocomplete="off">
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label for="item_rate" class="form-label mb-1">掛率（％）</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_rate"
+                     autocomplete="off">
+            </div>
+          </div>
+
+          <!-- 商品名（横いっぱい） -->
+          <div class="row g-2 mb-2">
+            <div class="col-12">
+              <label for="item_product_name" class="form-label mb-1">商品名</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     id="item_product_name"
+                     autocomplete="off">
+            </div>
+          </div>
+
+          <!-- 差引実 ＋ 内箱入数 -->
+          <div class="row g-2 mb-2">
+            <div class="col-6 col-md-3">
+              <label for="item_stock" class="form-label mb-1">差引実</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_stock"
+                     autocomplete="off">
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label for="item_inner_qty" class="form-label mb-1">内箱入数</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_inner_qty"
+                     autocomplete="off">
+            </div>
+          </div>
+
+          <!-- 下代 ＋ 金額 -->
+          <div class="row g-2 mb-2">
+            <div class="col-6 col-md-3">
+              <label for="item_lower_price" class="form-label mb-1">下代</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_lower_price"
+                     autocomplete="off">
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label for="item_amount" class="form-label mb-1">金額</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_amount"
+                     autocomplete="off">
+            </div>
+          </div>
+
+          <!-- カタログNo ＋ 行 -->
+           <div class="row g-2 mb-2">
+            <div class="col-6 col-md-3">
+              <label for="item_catalog_no" class="form-label mb-1">カタログNo</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     id="item_catalog_no"
+                     autocomplete="off">
+            </div>         
+
+            <div class="col-6 col-md-3">
+              <label for="item_row" class="form-label mb-1">行</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     id="item_row"
+                     autocomplete="off">
+            </div>
+          </div>
+
+          <!-- 頁 ＋ 荷姿 -->
+             <div class="row g-2 mb-2">
+            <div class="col-6 col-md-3">
+              <label for="item_page" class="form-label mb-1">頁</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     id="item_page"
+                     autocomplete="off">
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label for="item_package" class="form-label mb-1">荷姿</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     id="item_package"
+                     autocomplete="off">
+            </div>
+          </div>
+
+          <!-- 上代 ＋ 特別上代 -->
+          <div class="row g-2 mb-1">
+            <div class="col-6 col-md-3">
+              <label for="item_price" class="form-label mb-1">上代</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_price"
+                     autocomplete="off">
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label for="item_special_price" class="form-label mb-1">特別上代</label>
+              <input type="number"
+                     class="form-control form-control-sm"
+                     id="item_special_price"
+                     autocomplete="off">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- フッター -->
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+          キャンセル
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" id="saveItem">
+          明細を保存
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

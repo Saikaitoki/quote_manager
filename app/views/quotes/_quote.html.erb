@@ -1,0 +1,96 @@
+<div id="<%= dom_id quote %>" class="card shadow-sm mb-4">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+    <div>
+      <small class="text-muted d-block">得意先</small>
+      <h5 class="mb-0 fw-bold"><%= quote.customer_name.presence || "（得意先指定なし）" %> 様</h5>
+    </div>
+    <div>
+      <% case quote.status %>
+      <% when "synced" %>
+        <span class="badge bg-success">同期済</span>
+      <% when "pending" %>
+        <span class="badge bg-warning text-dark">未同期</span>
+      <% else %>
+        <span class="badge bg-danger">同期失敗</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col-6">
+        <small class="text-muted d-block">担当者</small>
+        <%= quote.staff_name.presence || "-" %>
+      </div>
+      <div class="col-6 text-end">
+        <small class="text-muted d-block">見積日</small>
+        <%= quote.created_on&.strftime("%Y/%m/%d") %>
+      </div>
+    </div>
+
+    <% if quote.note.present? %>
+      <div class="mb-4 bg-light p-3 rounded">
+        <small class="text-muted d-block mb-1">備考</small>
+        <%= simple_format(quote.note, class: "mb-0 text-break") %>
+      </div>
+    <% end %>
+
+    <h6 class="fw-bold border-bottom pb-2 mb-3">見積明細</h6>
+    
+    <!-- モバイル向け: リスト表示 -->
+    <div class="d-md-none">
+      <% quote.items.each do |item| %>
+        <div class="border-bottom pb-2 mb-2">
+          <div class="mb-1 fw-bold"><%= item.product_name %></div>
+          <div class="d-flex justify-content-between small text-muted">
+             <span><%= item.product_cd %></span>
+             <span>数量: <%= item.quantity %></span>
+          </div>
+          <div class="text-end">
+             <span class="small">単価: <%= number_to_currency(item.lower_price, unit: "¥", precision: 0) %></span>
+             <span class="ms-2 fw-bold text-dark"><%= number_to_currency(item.amount, unit: "¥", precision: 0) %></span>
+          </div>
+        </div>
+      <% end %>
+      <% if quote.items.empty? %>
+        <p class="text-muted text-center small my-3">明細がありません</p>
+      <% end %>
+    </div>
+
+    <!-- PC向け: テーブル表示 -->
+    <div class="d-none d-md-block table-responsive">
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>商品コード</th>
+            <th>商品名</th>
+            <th class="text-end" style="width: 80px;">数量</th>
+            <th class="text-end" style="width: 100px;">単価</th>
+            <th class="text-end" style="width: 100px;">金額</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% quote.items.each do |item| %>
+            <tr>
+              <td><%= item.product_cd %></td>
+              <td><%= item.product_name %></td>
+              <td class="text-end"><%= item.quantity %></td>
+              <td class="text-end"><%= number_to_currency(item.lower_price, unit: "¥", precision: 0) %></td>
+              <td class="text-end"><%= number_to_currency(item.amount, unit: "¥", precision: 0) %></td>
+            </tr>
+          <% end %>
+          <% if quote.items.empty? %>
+             <tr><td colspan="5" class="text-center text-muted">明細がありません</td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-end mt-4">
+      <small class="text-muted">小計（税抜）</small>
+      <div class="fs-2 fw-bold text-primary">
+        <%= number_to_currency(quote.subtotal, unit: "¥", precision: 0) %>
+      </div>
+    </div>
+  </div>
+</div>

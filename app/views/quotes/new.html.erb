@@ -1,0 +1,15 @@
+<!-- app/views/quotes/new.html.erb -->
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">見積書の新規作成</h4>
+    </div>
+
+    <div class="card-body">
+      <%= render "form", quote: @quote %>
+    </div>
+  </div>
+
+  <!-- 商品追加・編集モーダル（フォームの外に置く） -->
+  <%= render "item_modal" %>
+</div>

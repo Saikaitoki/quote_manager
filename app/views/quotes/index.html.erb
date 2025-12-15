@@ -1,0 +1,143 @@
+<!-- app/views/quotes/index.html.erb -->
+<div class="container mt-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+    <h1 class="fw-bold mb-3 mb-md-0">見積書一覧</h1>
+
+    <div class="d-flex gap-2 w-100 w-md-auto justify-content-start justify-content-md-end">
+      <%= button_to "kintone から最新を取得", sync_from_kintone_quotes_path,
+            method: :post,
+            class: "btn btn-outline-primary",
+            data: { turbo: false } %>
+
+      <%= link_to "＋ 新規作成", new_quote_path,
+            class: "btn btn-primary",
+            data: { turbo: false } %>
+    </div>
+  </div>
+
+  <!-- 検索フォーム -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <%= form_with url: quotes_path, method: :get, local: true, class: "row g-3 align-items-end" do |f| %>
+        <div class="col-md-8 col-12">
+          <label class="form-label small text-muted">検索キーワード</label>
+          <%= f.text_field "q[keyword]", value: params.dig(:q, :keyword), class: "form-control", placeholder: "得意先コード または 得意先名" %>
+        </div>
+        <div class="col-md-2 col-6 d-grid">
+          <%= f.submit "検索", class: "btn btn-dark" %>
+        </div>
+        <div class="col-md-2 col-6 d-grid">
+           <%= link_to "クリア", quotes_path, class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if notice.present? %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
+
+  <% if alert.present? %>
+    <div class="alert alert-danger"><%= alert %></div>
+  <% end %>
+
+  <% if @quotes.any? %>
+      <div class="d-none d-md-block">
+        <table class="table table-hover align-middle shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>kintone ID</th>
+              <th>得意先</th>
+              <th>担当者</th>
+              <th>見積日</th>
+              <th class="text-end">小計（税抜）</th>
+              <th>同期状態</th>
+              <th class="text-center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @quotes.each do |quote| %>
+              <tr>
+                <td><%= quote.kintone_record_id %></td>
+                <td><%= quote.customer_name.presence || "-" %></td>
+                <td><%= quote.staff_name.presence || "-" %></td>
+                <td><%= quote.created_on&.strftime("%Y-%m-%d") %></td>
+                <td class="text-end">
+                  <%= number_to_currency(quote.subtotal, unit: "¥", precision: 0) %>
+                </td>
+                <td>
+                  <% case quote.status %>
+                  <% when "synced" %>
+                    <span class="badge bg-success">同期済</span>
+                  <% when "pending" %>
+                    <span class="badge bg-warning text-dark">未同期</span>
+                  <% else %>
+                    <span class="badge bg-danger">同期失敗</span>
+                  <% end %>
+                </td>
+                <td class="text-center text-nowrap">
+                  <%= link_to "詳細", quote_path(quote), class: "btn btn-sm btn-outline-secondary me-1" %>
+                  <%= link_to "編集", edit_quote_path(quote), class: "btn btn-sm btn-outline-primary me-1" %>
+                  <%= link_to "削除", quote,
+                        data: { turbo_method: :delete, turbo_confirm: "削除してよろしいですか？" },
+                        class: "btn btn-sm btn-outline-danger" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- モバイル用カードビュー -->
+      <div class="d-md-none">
+        <% @quotes.each do |quote| %>
+          <div class="quote-item-card mb-3 shadow-sm">
+            <div class="d-flex flex-column gap-1">
+              <!-- Row 1: Quote ID, Date, Status -->
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-light text-dark border">
+                    #<%= quote.kintone_record_id.presence || "-" %>
+                  </span>
+                  <% case quote.status %>
+                  <% when "synced" %>
+                    <span class="badge bg-success">同期済</span>
+                  <% when "pending" %>
+                    <span class="badge bg-warning text-dark">未同期</span>
+                  <% else %>
+                    <span class="badge bg-danger">同期失敗</span>
+                  <% end %>
+                </div>
+                <small class="text-muted"><%= quote.created_on&.strftime("%Y/%m/%d") %></small>
+              </div>
+
+              <!-- Row 2: Customer Name -->
+              <div class="fw-bold fs-5 mb-1">
+                <%= quote.customer_name.presence || "（得意先不明）" %> 様
+              </div>
+
+              <!-- Row 3: Staff Name -->
+              <div class="text-muted small mb-2">
+                <i class="bi bi-person"></i> 担当: <%= quote.staff_name.presence || "-" %>
+              </div>
+
+              <!-- Row 4: Buttons -->
+              <div class="d-flex justify-content-end gap-2 mt-1">
+                <%= link_to quote_path(quote), class: "btn btn-outline-secondary btn-sm px-3" do %>
+                  <i class="bi bi-file-text"></i> 詳細
+                <% end %>
+                <%= link_to edit_quote_path(quote), class: "btn btn-outline-primary btn-sm px-3" do %>
+                  <i class="bi bi-pencil"></i> 編集
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+  <% else %>
+    <div class="alert alert-secondary text-center">
+      見積がまだ登録されていません。<br>
+      「kintone から最新を取得」ボタンで同期できます。
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,189 @@
+<%= form_with(model: quote, local: true, data: { turbo: false }) do |f| %>
+  <% if quote.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% quote.errors.each do |err| %>
+          <li><%= err.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- ヘッダー：kintone と揃えた項目 -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <%= f.label :customer_code, "得意先コード" %>
+      <div class="input-group">
+        <%= f.text_field :customer_code, class: "form-control", id: "quote_customer_code" %>
+        <button type="button" class="btn btn-outline-secondary" id="lookupCustomerBtn">検索</button>
+      </div>
+      <div id="customer_lookup_error" class="invalid-feedback d-block text-danger small"></div>
+    </div>
+
+    <div class="col-md-8">
+      <%= f.label :customer_name, "得意先名" %>
+      <%= f.text_field :customer_name, class: "form-control", id: "quote_customer_name" %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <%= f.label :staff_code, "担当者コード" %>
+      <div class="input-group">
+        <%= f.text_field :staff_code, class: "form-control", id: "quote_staff_code" %>
+        <button type="button" class="btn btn-outline-secondary" id="lookupStaffBtn">検索</button>
+      </div>
+      <div id="staff_lookup_error" class="invalid-feedback d-block text-danger small"></div>
+    </div>
+
+    <div class="col-md-8">
+      <%= f.label :staff_name, "担当者" %>
+      <%= f.text_field :staff_name, class: "form-control", id: "quote_staff_name" %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <%= f.label :created_on, "作成日", class: "form-label fw-bold" %>
+      <%= f.date_field :created_on, class: "form-control" %>
+    </div>
+  </div>
+
+  <!-- ✅ 掛率設定 (自動適用) -->
+  <div class="card mb-4 border-light shadow-sm bg-body">
+    <div class="card-header bg-white border-0 py-2 cursor-pointer" data-bs-toggle="collapse" data-bs-target="#rateSettings" aria-expanded="false" style="cursor: pointer;">
+      <h6 class="mb-0 text-muted d-flex align-items-center">
+        <i class="bi bi-gear-fill me-2"></i> 掛率設定 (自動適用) <i class="bi bi-chevron-down ms-auto"></i>
+      </h6>
+    </div>
+    <div id="rateSettings" class="collapse show">
+      <div class="card-body pt-0">
+        <p class="small text-muted mb-2">※ 得意先を選択すると自動入力されます。必要に応じて修正してください。</p>
+        <div class="row g-2">
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">プロパー</label>
+            <input type="number" id="rate_proper" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">クラシノウツワ</label>
+            <input type="number" id="rate_kurashino" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">Common</label>
+            <input type="number" id="rate_common" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">Essence</label>
+            <input type="number" id="rate_essence" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">The Porcelains</label>
+            <input type="number" id="rate_porcelains" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">F記号</label>
+            <input type="number" id="rate_f_symbol" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small text-muted mb-0">H/J記号</label>
+            <input type="number" id="rate_h_symbol" class="form-control form-control-sm rate-setting" placeholder="%">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :note, "備考", class: "form-label fw-bold" %>
+    <%= f.text_area :note, class: "form-control", rows: 3 %>
+  </div>
+
+  <!-- ✅ 商品明細 -->
+  <h5 class="fw-bold mt-4 mb-3">商品明細</h5>
+
+  <div id="items-container">
+    <table class="table table-hover align-middle mt-2" id="items-table">
+      <tbody>
+        <%= f.fields_for :items do |item_form| %>
+          <%= render "item_fields", f: item_form %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 行追加ボタン -->
+  <div class="mb-3">
+    <button type="button"
+            class="btn btn-outline-success btn-sm"
+            id="openModalBtn"
+            data-bs-toggle="modal"
+            data-bs-target="#itemModal">
+      ＋ 行を追加
+    </button>
+  </div>
+
+  <!-- 登録・戻るボタン -->
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to "一覧に戻る", quotes_path, class: "btn btn-secondary" %>
+    <%= f.submit "登録する", class: "btn btn-primary px-4" %>
+  </div>
+
+  <!-- カード用テンプレート -->
+  <template id="item-template">
+    <div class="quote-item-card mb-3 p-3 shadow-sm rounded" data-item="{}">
+
+      <div class="d-flex flex-column gap-0">
+        <!-- 1行目: 商品コード -->
+        <div class="d-flex align-items-center">
+          <span class="text-muted small me-1">商品コード:</span>
+          <span class="product_cd_cell font-monospace"></span>
+        </div>
+
+        <!-- 2行目: 商品名 -->
+        <div class="d-flex align-items-center">
+          <span class="text-muted small me-1">商品名:</span>
+          <span class="product_name_cell fw-bold flex-grow-1 text-truncate"></span>
+        </div>
+
+        <!-- 3行目: 差引実・数量 -->
+        <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center me-4">
+            <span class="text-muted small me-2">差引実:</span>
+            <span class="difference_actual_cell fw-bold"></span>
+          </div>
+          <div class="d-flex align-items-center">
+            <span class="text-muted small me-2">数量:</span>
+            <span class="quantity_cell fw-bold"></span>
+          </div>
+        </div>
+
+        <!-- 4行目: 掛率・削除ボタン -->
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <span class="text-muted small me-2">掛率:</span>
+            <span class="rate_cell fw-bold"></span>%
+          </div>
+          <a href="#" class="btn btn-outline-danger btn-sm px-4 rounded-1 remove-item">削除</a>
+        </div>
+      </div>
+
+      <!-- hidden fields（items.js がここに値を書き込む） -->
+      <input type="hidden" name="quote[items_attributes][new_items][product_cd]">
+      <input type="hidden" name="quote[items_attributes][new_items][product_name]">
+      <input type="hidden" name="quote[items_attributes][new_items][difference_actual]">
+      <input type="hidden" name="quote[items_attributes][new_items][quantity]">
+      <input type="hidden" name="quote[items_attributes][new_items][rate]">
+      <input type="hidden" name="quote[items_attributes][new_items][lower_price]">
+      <input type="hidden" name="quote[items_attributes][new_items][amount]">
+      <input type="hidden" name="quote[items_attributes][new_items][upper_price]">
+      <input type="hidden" name="quote[items_attributes][new_items][catalog_no]">
+      <input type="hidden" name="quote[items_attributes][new_items][special_upper_price]">
+      <input type="hidden" name="quote[items_attributes][new_items][inner_box_count]">
+      <input type="hidden" name="quote[items_attributes][new_items][page]">
+      <input type="hidden" name="quote[items_attributes][new_items][row]">
+      <input type="hidden" name="quote[items_attributes][new_items][package]">
+    </div>
+  </template>
+<% end %>
+
+<%= render "item_modal" %>

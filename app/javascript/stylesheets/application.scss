@@ -1,0 +1,146 @@
+// app/javascript/stylesheets/application.scss
+
+// 1. Google Fonts Import (Noto Serif JP for headings, Noto Sans JP for body)
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap');
+
+// 2. Variable Overrides
+$font-family-sans-serif: "Noto Sans JP", sans-serif;
+$font-family-serif: "Noto Serif JP", serif;
+
+// --- Plan A: Modern Blue Theme ---
+$body-bg: #f5f5f7; // Light gray background
+$body-color: #333333;
+
+$primary: #3b82f6; // Modern Blue
+$subtle-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+// 3. Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// 4. Custom Styles
+
+// Typography
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-title {
+  font-family: $font-family-serif;
+  letter-spacing: 0.05em;
+}
+
+body {
+  letter-spacing: 0.02em;
+  background-color: $body-bg;
+}
+
+// Buttons
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3); // Blue shadow
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+    border-color: darken($primary, 10%);
+  }
+}
+
+.btn-outline-primary {
+  color: $primary;
+  border-color: $primary;
+
+  &:hover {
+    background-color: $primary;
+    border-color: $primary;
+    color: white;
+  }
+}
+
+// Cards
+.card {
+  border: none;
+  box-shadow: $subtle-shadow;
+  border-radius: 8px; // Slightly more rounded
+  background-color: #ffffff;
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Inputs
+.form-control,
+.form-select {
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 0.8rem;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    border-color: $primary;
+  }
+}
+
+// Table (Mobile Card Style for Items)
+#items-table {
+  border-collapse: separate;
+  border-spacing: 0 0.75rem; // More spacing between cards
+}
+
+// --- Plan A: Quote Item Card Styling ---
+.quote-item-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: $subtle-shadow;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+
+  // Base border
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  // Left Blue Accent
+  border-left: 5px solid $primary; // Solid Accent
+}
+
+// Specific table cell styles
+.product_name_cell {
+  font-family: $font-family-serif;
+  font-weight: 600;
+  color: #111827; // Darker black
+}
+
+.product_cd_cell {
+  color: #6b7280; // Gray-500
+  font-size: 0.85em;
+}
+
+// Rate/Qty Helpers
+.rate_cell,
+.quantity_cell,
+.difference_actual_cell {
+  font-weight: 500;
+  color: #374151;
+}
+
+// Navbar if exists (Custom)
+.navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  .navbar-brand {
+    font-family: $font-family-serif;
+    color: #111827 !important;
+    font-weight: bold;
+  }
+}
+
+// Badge
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}

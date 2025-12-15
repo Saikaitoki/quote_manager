@@ -1,0 +1,31 @@
+<!-- app/views/quotes/show.html.erb -->
+<div class="container mt-md-5 mt-3">
+  <% if notice.present? %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
+
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      
+      <%= render @quote %>
+
+      <!-- アクションボタン -->
+      <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4 mb-5">
+        <%= link_to quotes_path, class: "btn btn-outline-secondary btn-lg order-2 order-md-1 px-4" do %>
+          <i class="bi bi-arrow-left"></i> 一覧に戻る
+        <% end %>
+
+        <%= link_to edit_quote_path(@quote), class: "btn btn-primary btn-lg order-1 order-md-2 px-5" do %>
+          <i class="bi bi-pencil-square"></i> 編集する
+        <% end %>
+      </div>
+      
+      <div class="text-center mt-3">
+        <%= button_to "この見積を削除", @quote, method: :delete, 
+              class: "btn btn-link text-danger btn-sm text-decoration-none",
+              form: { data: { turbo_confirm: "本当に削除しますか？" } } %>
+      </div>
+
+    </div>
+  </div>
+</div>

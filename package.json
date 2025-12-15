@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@hotwired/turbo-rails": "^8.0.20",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12",
+    "esbuild-sass-plugin": "^3.3.1",
+    "sass": "^1.93.3"
+  },
+  "scripts": {
+    "build": "node esbuild.config.js"
+  }
+}
