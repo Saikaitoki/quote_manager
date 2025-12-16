@@ -11,7 +11,7 @@ import "./items"
 import "./customer_staff_lookup"
 
 // ✅ スタイルシート (Esbuildで処理)
-import "./stylesheets/application.scss"
+// import "./stylesheets/application.scss"
 
 // ✅ Bootstrap をグローバル化（モーダル用）
 window.bootstrap = bootstrap
