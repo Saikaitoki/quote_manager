@@ -24,7 +24,7 @@
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 </head>
 
-  <body class="bg-light">
+  <body class="bg-light" data-controller="numpad">
     <%= yield %>
     <%= render "shared/numpad" %>
   </body>
