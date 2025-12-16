@@ -17,7 +17,7 @@
         <%= f.text_field :customer_code, class: "form-control", id: "quote_customer_code" %>
         <button type="button" class="btn btn-outline-secondary" id="lookupCustomerBtn">検索</button>
       </div>
-      <div id="customer_lookup_error" class="invalid-feedback d-block text-danger small"></div>
+      <div id="customer_lookup_error" class="invalid-feedback text-danger small"></div>
     </div>
 
     <div class="col-md-8">
@@ -33,7 +33,7 @@
         <%= f.text_field :staff_code, class: "form-control", id: "quote_staff_code" %>
         <button type="button" class="btn btn-outline-secondary" id="lookupStaffBtn">検索</button>
       </div>
-      <div id="staff_lookup_error" class="invalid-feedback d-block text-danger small"></div>
+      <div id="staff_lookup_error" class="invalid-feedback text-danger small"></div>
     </div>
 
     <div class="col-md-8">
@@ -101,14 +101,10 @@
   <!-- ✅ 商品明細 -->
   <h5 class="fw-bold mt-4 mb-3">商品明細</h5>
 
-  <div id="items-container">
-    <table class="table table-hover align-middle mt-2" id="items-table">
-      <tbody>
-        <%= f.fields_for :items do |item_form| %>
-          <%= render "item_fields", f: item_form %>
-        <% end %>
-      </tbody>
-    </table>
+  <div id="items-container" class="mt-2">
+    <%= f.fields_for :items do |item_form| %>
+      <%= render "item_fields", f: item_form %>
+    <% end %>
   </div>
 
   <!-- 行追加ボタン -->
@@ -136,7 +132,7 @@
         <!-- 1行目: 商品コード -->
         <div class="d-flex align-items-center">
           <span class="text-muted small me-1">商品コード:</span>
-          <span class="product_cd_cell font-monospace"></span>
+          <span class="product_cd_cell"></span>
         </div>
 
         <!-- 2行目: 商品名 -->

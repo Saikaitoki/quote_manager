@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_09_050317) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_15_073010) do
   create_table "items", force: :cascade do |t|
     t.integer "amount"
     t.string "catalog_no"
@@ -57,6 +57,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_050317) do
     t.string "staff_code"
     t.string "staff_name"
     t.string "status", default: "pending", null: false
+    t.string "stock_status", default: "secured", null: false
     t.integer "subtotal", default: 0, null: false
     t.datetime "synced_at"
     t.integer "total"

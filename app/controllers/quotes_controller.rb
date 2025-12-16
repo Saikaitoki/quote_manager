@@ -73,7 +73,11 @@ class QuotesController < ApplicationController
   # PATCH/PUT /quotes/1
   def update
     if @quote.update(quote_params)
-      redirect_to @quote, notice: "見積書を更新しました。"
+      if params[:quote][:redirect_to_index] == "true"
+        redirect_to quotes_url, notice: "ステータスを変更しました。"
+      else
+        redirect_to @quote, notice: "見積書を更新しました。"
+      end
     else
       render :edit, status: :unprocessable_entity
     end
@@ -129,6 +133,8 @@ class QuotesController < ApplicationController
 
   def quote_params
     params.require(:quote).permit(
+      :stock_status,
+      :redirect_to_index,
       :customer_code,
       :customer_name,
       :ship_to_name,

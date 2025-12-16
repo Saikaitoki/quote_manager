@@ -155,8 +155,8 @@ function initializeQuoteItems() {
 
     saveButton.addEventListener("click", () => {
       requestAnimationFrame(() => {
-        const itemsTable = document.getElementById("items-table");
-        if (!itemsTable) return;
+        const itemsContainer = document.getElementById("items-container");
+        if (!itemsContainer) return;
 
         const itemData = collectModalValues(itemModal, FIELD_ID_MAP);
 
@@ -178,17 +178,23 @@ function initializeQuoteItems() {
           const newId = Date.now();
           const html = templateEl.innerHTML.replace(/new_items/g, newId);
 
-          const temp = document.createElement("tbody");
+          const temp = document.createElement("div");
           temp.innerHTML = html.trim();
 
-          const newCard = temp.querySelector(".quote-item-card");
+          const newCard = temp.firstElementChild;
           if (!newCard) {
             console.error("template 内に .quote-item-card が見つかりません");
             return;
           }
 
-          const tbody = itemsTable.querySelector("tbody") || itemsTable;
-          tbody.prepend(newCard);
+          // div#items-container に追加する
+          const container = document.getElementById("items-container");
+          if (container) {
+            // 新規は上に追加したいなら prepend, 下なら append
+            container.appendChild(newCard);
+          } else {
+            console.error("#items-container が見つかりません");
+          }
 
           updateCardDisplay(newCard, itemData);
           newCard.dataset.item = JSON.stringify(itemData);

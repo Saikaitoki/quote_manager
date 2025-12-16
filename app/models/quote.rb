@@ -1,6 +1,11 @@
 class Quote < ApplicationRecord
+  enum :stock_status, { secured: "secured", released: "released" }
+
   has_many :items, class_name: "QuoteItem", dependent: :destroy
   accepts_nested_attributes_for :items, allow_destroy: true
+
+  # コントローラーでのリダイレクト制御用（DB保存しない）
+  attr_accessor :redirect_to_index
 
   # ==========================
   # ステータス管理（kintoneキャッシュ用）
@@ -75,8 +80,9 @@ class Quote < ApplicationRecord
 
   # DB スナップショットによる old_items 管理は使わない
   before_destroy :snapshot_items_for_reservation, prepend: true
-  after_commit :sync_to_kintone_later,              on: %i[create update]
   after_commit :apply_stock_reservation_to_kintone, on: %i[create update destroy]
+  after_commit :sync_to_kintone_later,              on: %i[create update]
+  after_commit :delete_kintone_record,              on: :destroy
 
   # 小計（税抜）の自動計算
   def recalculate_subtotal
@@ -89,6 +95,9 @@ class Quote < ApplicationRecord
   # ==========================
   # 見積1件分の { 商品CD => 数量合計 } を返す
   def items_quantity_by_product_code(items_collection = items)
+    # 在庫解放（released）状態なら、保持している在庫は 0個 として扱う
+    return {} if released?
+
     items_collection
       .reject(&:marked_for_destruction?)
       .group_by { |item| item.product_cd } # DB カラム名に合わせる
@@ -165,14 +174,30 @@ class Quote < ApplicationRecord
 
     # 旧状態: 
     #   削除時 -> 直前のDB状態（@item_snapshot_for_destroy）を使用（2重解放防止）
+    #   前回ステータスが「解放済」 -> 確保数0として扱う
     #   その他 -> kintone 上の前回レコード（raw_payload）を基準
     old_items =
       if destroyed? && @item_snapshot_for_destroy
         @item_snapshot_for_destroy
-      elsif kintone_record_id.present? && raw_payload.present?
-        kintone_items_quantity_by_product_code
       else
-        {}
+        # 直前のステータスを確認
+        # saved_changes['stock_status'] => [before, after]
+        # 変更がない場合は saved_changes に含まれないので、現在の stock_status を使う
+        prev_status_str = 
+          if saved_changes.key?('stock_status')
+            saved_changes['stock_status'][0]
+          else
+            stock_status # 変更なし
+          end
+        
+        # 以前の状態が「released」（解放済）だったなら、在庫確保数は 0 だったとみなす
+        if prev_status_str == "released"
+          {}
+        elsif kintone_record_id.present? && raw_payload.present?
+          kintone_items_quantity_by_product_code
+        else
+          {}
+        end
       end
 
     # 新状態: Rails 側の items（今回保存した内容）
@@ -230,6 +255,12 @@ class Quote < ApplicationRecord
   rescue => e
     Rails.logger.error("[kintone-sync] Quote##{id} #{e.class} #{e.message}")
     update_column(:status, "failed") if persisted?
+  end
+
+  def delete_kintone_record
+    Kintone::QuoteSyncService.new(self).delete!
+  rescue => e
+    Rails.logger.error("[kintone-delete] Quote##{id} #{e.class} #{e.message}")
   end
 
   # --------------------------

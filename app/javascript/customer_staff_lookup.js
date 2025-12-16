@@ -34,13 +34,19 @@ document.addEventListener("turbo:load", () => {
   function showError(input, errorId, message) {
     if (input) input.classList.add("is-invalid");
     const errEl = document.getElementById(errorId);
-    if (errEl) errEl.textContent = message;
+    if (errEl) {
+      errEl.textContent = message;
+      errEl.classList.add("d-block");
+    }
   }
 
   function clearError(input, errorId) {
     if (input) input.classList.remove("is-invalid");
     const errEl = document.getElementById(errorId);
-    if (errEl) errEl.textContent = "";
+    if (errEl) {
+      errEl.textContent = "";
+      errEl.classList.remove("d-block");
+    }
   }
 
   // ===== 得意先ルックアップ =====
@@ -213,5 +219,12 @@ document.addEventListener("turbo:load", () => {
         e.preventDefault();
       }
     });
+  }
+
+  // ===== 編集画面などで初期値が入っている場合の自動取得 =====
+  if (customerCodeInput && customerCodeInput.value.trim()) {
+    // ページロード時はキャッシュを使わず最新を取りに行くか、あるいはキャッシュさせるか。
+    // ここでは念のため force: true で取得して掛率などをセットする
+    lookupCustomer({ force: true });
   }
 });

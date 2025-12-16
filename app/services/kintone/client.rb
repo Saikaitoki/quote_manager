@@ -23,6 +23,10 @@ module Kintone
       request(:put, path, body)
     end
 
+    def delete(path, body)
+      request(:delete, path, body)
+    end
+
     def get(path, params = {})
       uri = build_uri(path, params)
       req = Net::HTTP::Get.new(uri)
@@ -34,7 +38,11 @@ module Kintone
 
     def request(method, path, body)
       uri = build_uri(path)
-      req = (method == :post ? Net::HTTP::Post.new(uri) : Net::HTTP::Put.new(uri))
+      req = case method
+            when :post   then Net::HTTP::Post.new(uri)
+            when :put    then Net::HTTP::Put.new(uri)
+            when :delete then Net::HTTP::Delete.new(uri)
+            end
       req["Content-Type"] = "application/json"
       req["X-Cybozu-API-Token"] = @api_token
       Rails.logger.info("[kintone-http] method=#{method} path=#{path} body=#{body.inspect}")

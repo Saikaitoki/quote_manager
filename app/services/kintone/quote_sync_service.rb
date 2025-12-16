@@ -20,6 +20,28 @@ module Kintone
         create!(mapper)
       end
     end
+    
+    def delete!
+      Rails.logger.info("[kintone-delete] Start delete! for id=#{@quote.id}, kintone_id=#{@quote.kintone_record_id}")
+      return if @quote.kintone_record_id.blank?
+
+      payload = {
+        app: QuoteMapper::APP_ID,
+        ids: [@quote.kintone_record_id.to_i]
+      }
+      
+      Rails.logger.info("[kintone-delete] Sending delete payload: #{payload.inspect}")
+      with_retries { @client.delete("/k/v1/records.json", payload) }
+      Rails.logger.info("[kintone-delete] Success")
+      true
+    rescue KintoneError => e
+      # 既に消えている(404)なら正常とみなす
+      # GAIA_RE01: The specified record (id: ...) is not found.
+      return true if e.message.include?("not found") || e.code == "GAIA_RE01"
+      
+      Rails.logger.error("[kintone-delete] Quote##{@quote.id} delete failed: #{e.message}")
+      raise
+    end
 
     private
 
@@ -30,9 +52,12 @@ module Kintone
       record_id = data["id"] || data.dig("record", "$id", "value")
       revision  = data["revision"]&.to_i
 
+      # 同期した内容を raw_payload として保存
+      # body[:record] は Hash なので、textカラムに入れるために明示的に JSON 化する
       @quote.update_columns(
         kintone_record_id: record_id.to_s,
-        kintone_revision:  revision
+        kintone_revision:  revision,
+        raw_payload:       body[:record].to_json
       )
 
       true
@@ -47,19 +72,26 @@ module Kintone
       data = with_retries { @client.put(UPDATE_PATH, body) }
       revision = data["revision"]&.to_i
 
-      @quote.update_columns(kintone_revision: revision)
+      @quote.update_columns(
+        kintone_revision: revision,
+        raw_payload:      body[:record].to_json
+      )
       true
     rescue KintoneError => e
-      # revision 衝突（他ユーザーがkintone側で編集したなど）の場合の扱い
+      # revision 衝突
       raise unless e.code == "GAIA_RECMODIFIED"
 
-      # 方針: revision指定なしで上書き更新（運用次第でここを変えてもよい）
+      # 強制更新
       body = mapper.to_update_payload(
         record_id: @quote.kintone_record_id,
         revision:  nil
       )
       data = with_retries { @client.put(UPDATE_PATH, body) }
-      @quote.update_columns(kintone_revision: data["revision"]&.to_i)
+      
+      @quote.update_columns(
+        kintone_revision: data["revision"]&.to_i,
+        raw_payload:      body[:record].to_json
+      )
       true
     end
 

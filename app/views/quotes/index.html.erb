@@ -74,6 +74,20 @@
                   <% else %>
                     <span class="badge bg-danger">同期失敗</span>
                   <% end %>
+                  <div class="mt-1">
+                    <%= form_with model: quote, url: quote_path(quote), method: :patch, local: true, data: { turbo: false } do |f| %>
+                      <%= f.hidden_field :redirect_to_index, value: "true" %>
+                      <%= f.select :stock_status,
+                            Quote.stock_statuses.keys.map { |k| [k == "secured" ? "在庫確保中" : "在庫解放済", k] },
+                            {},
+                            {
+                              class: "form-select form-select-sm fw-bold #{quote.secured? ? 'text-primary border-primary' : 'text-danger border-danger'}",
+                              style: "width: 110px;",
+                              onchange: "this.form.submit()"
+                            }
+                      %>
+                    <% end %>
+                  </div>
                 </td>
                 <td class="text-center text-nowrap">
                   <%= link_to "詳細", quote_path(quote), class: "btn btn-sm btn-outline-secondary me-1" %>
@@ -106,6 +120,19 @@
                     <span class="badge bg-warning text-dark">未同期</span>
                   <% else %>
                     <span class="badge bg-danger">同期失敗</span>
+                  <% end %>
+                  
+                  <%= form_with model: quote, url: quote_path(quote), method: :patch, local: true, data: { turbo: false }, class: "d-inline-block ms-1" do |f| %>
+                    <%= f.hidden_field :redirect_to_index, value: "true" %>
+                    <%= f.select :stock_status,
+                          Quote.stock_statuses.keys.map { |k| [k == "secured" ? "確保中" : "解放済", k] },
+                          {},
+                          {
+                            class: "form-select form-select-sm fw-bold py-0 ps-1 pe-4 #{quote.secured? ? 'text-primary border-primary' : 'text-danger border-danger'}",
+                            style: "height: 24px; font-size: 0.8rem;",
+                            onchange: "this.form.submit()"
+                          }
+                    %>
                   <% end %>
                 </div>
                 <small class="text-muted"><%= quote.created_on&.strftime("%Y/%m/%d") %></small>

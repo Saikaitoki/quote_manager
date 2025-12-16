@@ -4,15 +4,32 @@
       <small class="text-muted d-block">得意先</small>
       <h5 class="mb-0 fw-bold"><%= quote.customer_name.presence || "（得意先指定なし）" %> 様</h5>
     </div>
-    <div>
-      <% case quote.status %>
-      <% when "synced" %>
-        <span class="badge bg-success">同期済</span>
-      <% when "pending" %>
-        <span class="badge bg-warning text-dark">未同期</span>
-      <% else %>
-        <span class="badge bg-danger">同期失敗</span>
-      <% end %>
+    <div class="text-end">
+      <div>
+        <% case quote.status %>
+        <% when "synced" %>
+          <span class="badge bg-success">同期済</span>
+        <% when "pending" %>
+          <span class="badge bg-warning text-dark">未同期</span>
+        <% else %>
+          <span class="badge bg-danger">同期失敗</span>
+        <% end %>
+      </div>
+
+      <div class="mt-2">
+        <%= form_with model: quote, url: quote_path(quote), method: :patch, local: true, data: { turbo: false } do |f| %>
+          <small class="text-muted d-block mb-1" style="font-size: 0.7rem;">在庫ステータス</small>
+          <%= f.select :stock_status,
+                Quote.stock_statuses.keys.map { |k| [k == "secured" ? "在庫 確保中" : "在庫 解放済", k] },
+                {},
+                {
+                  class: "form-select form-select-sm fw-bold #{quote.secured? ? 'text-primary border-primary' : 'text-danger border-danger'}",
+                  style: "width: 130px; margin-left: auto;",
+                  onchange: "this.form.submit()"
+                }
+          %>
+        <% end %>
+      </div>
     </div>
   </div>
 
