@@ -1,0 +1,54 @@
+<div data-controller="numpad" class="numpad-wrapper">
+  <%# Container hidden by default %>
+  <div data-numpad-target="container" class="fixed-bottom bg-light border-top shadow p-2 d-none" style="z-index: 2000; height: 35vh;">
+    <div class="h-100 d-flex flex-column">
+      <!-- Close Bar -->
+      <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-secondary btn-sm px-4" data-action="click->numpad#close">閉じる</button>
+      </div>
+
+      <!-- Keys Grid -->
+      <div class="flex-grow-1">
+        <div class="row h-100 g-1">
+          <% [7, 8, 9].each do |num| %>
+            <div class="col-3">
+              <button type="button" class="btn btn-white border w-100 h-100 fw-bold fs-3" data-action="click->numpad#input" data-value="<%= num %>"><%= num %></button>
+            </div>
+          <% end %>
+          <div class="col-3">
+            <button type="button" class="btn btn-warning w-100 h-100 fw-bold" data-action="click->numpad#backspace">BS</button>
+          </div>
+
+          <% [4, 5, 6].each do |num| %>
+            <div class="col-3">
+              <button type="button" class="btn btn-white border w-100 h-100 fw-bold fs-3" data-action="click->numpad#input" data-value="<%= num %>"><%= num %></button>
+            </div>
+          <% end %>
+          <div class="col-3">
+            <button type="button" class="btn btn-danger w-100 h-100 fw-bold" data-action="click->numpad#clear">AC</button>
+          </div>
+
+          <% [1, 2, 3].each do |num| %>
+            <div class="col-3">
+              <button type="button" class="btn btn-white border w-100 h-100 fw-bold fs-3" data-action="click->numpad#input" data-value="<%= num %>"><%= num %></button>
+            </div>
+          <% end %>
+          <div class="col-3 text-center">
+             <!-- Placeholder or Enter -->
+             <button type="button" class="btn btn-primary w-100 h-100 fw-bold" data-action="click->numpad#close">Enter</button>
+          </div>
+
+          <div class="col-6">
+            <button type="button" class="btn btn-white border w-100 h-100 fw-bold fs-3" data-action="click->numpad#input" data-value="0">0</button>
+          </div>
+          <div class="col-3">
+             <button type="button" class="btn btn-white border w-100 h-100 fw-bold fs-3" data-action="click->numpad#input" data-value="00">00</button>
+          </div>
+          <div class="col-3">
+            <!-- Empty -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

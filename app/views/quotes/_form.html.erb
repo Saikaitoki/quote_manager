@@ -14,7 +14,7 @@
     <div class="col-md-4">
       <%= f.label :customer_code, "得意先コード" %>
       <div class="input-group">
-        <%= f.text_field :customer_code, class: "form-control", id: "quote_customer_code" %>
+        <%= f.text_field :customer_code, class: "form-control", id: "quote_customer_code", data: { action: "focus->numpad#open" }, inputmode: "numeric", pattern: "[0-9]*" %>
         <button type="button" class="btn btn-outline-secondary" id="lookupCustomerBtn">検索</button>
       </div>
       <div id="customer_lookup_error" class="invalid-feedback text-danger small"></div>
@@ -30,7 +30,7 @@
     <div class="col-md-4">
       <%= f.label :staff_code, "担当者コード" %>
       <div class="input-group">
-        <%= f.text_field :staff_code, class: "form-control", id: "quote_staff_code" %>
+        <%= f.text_field :staff_code, class: "form-control", id: "quote_staff_code", data: { action: "focus->numpad#open" }, inputmode: "numeric", pattern: "[0-9]*" %>
         <button type="button" class="btn btn-outline-secondary" id="lookupStaffBtn">検索</button>
       </div>
       <div id="staff_lookup_error" class="invalid-feedback text-danger small"></div>
@@ -62,31 +62,31 @@
         <div class="row g-2">
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">プロパー</label>
-            <input type="number" id="rate_proper" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_proper" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">クラシノウツワ</label>
-            <input type="number" id="rate_kurashino" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_kurashino" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">Common</label>
-            <input type="number" id="rate_common" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_common" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">Essence</label>
-            <input type="number" id="rate_essence" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_essence" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">The Porcelains</label>
-            <input type="number" id="rate_porcelains" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_porcelains" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">F記号</label>
-            <input type="number" id="rate_f_symbol" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_f_symbol" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label small text-muted mb-0">H/J記号</label>
-            <input type="number" id="rate_h_symbol" class="form-control form-control-sm rate-setting" placeholder="%">
+            <input type="number" id="rate_h_symbol" class="form-control form-control-sm rate-setting" placeholder="%" data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
           </div>
         </div>
       </div>
