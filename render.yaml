@@ -1,0 +1,21 @@
+databases:
+  - name: quote_manager_db
+    databaseName: quote_manager
+    user: quote_manager_user
+    plan: free
+
+services:
+  - type: web
+    name: quote_manager
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec rails server"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: quote_manager_db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+    autoDeploy: true
