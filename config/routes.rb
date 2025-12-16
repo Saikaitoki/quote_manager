@@ -25,5 +25,5 @@ Rails.application.routes.draw do
     get "staffs/lookup",    to: "staffs#lookup"
   end
 
-  root "quotes#index"
+  root "home#index"
 end

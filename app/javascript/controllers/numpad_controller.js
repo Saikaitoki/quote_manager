@@ -8,13 +8,12 @@ export default class extends Controller {
     }
 
     open(event) {
+        // Check mode setting
+        const isEnabled = localStorage.getItem('numpadEnabled') === 'true';
+        if (!isEnabled) return;
+
         this.activeInput = event.target
         this.containerTarget.classList.remove("d-none")
-        // Prevent default keyboard on mobile if possible, though inputmode="numeric" handles that nicely too (or inputmode="none" to block soft keyboard completely?)
-        // User wanted "numeric priority" so inputmode="numeric" is best.
-        // If they want to BLOCK the native keyboard to use ONLY this one, inputmode="none" is better.
-        // But they asked for "numeric priority display function", implying they MIGHT use the native one.
-        // Let's stick to inputmode="numeric" on the field itself.
     }
 
     close() {
