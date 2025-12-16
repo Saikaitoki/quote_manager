@@ -20,16 +20,16 @@ module Kintone
         create!(mapper)
       end
     end
-    
+
     def delete!
       Rails.logger.info("[kintone-delete] Start delete! for id=#{@quote.id}, kintone_id=#{@quote.kintone_record_id}")
       return if @quote.kintone_record_id.blank?
 
       payload = {
         app: QuoteMapper::APP_ID,
-        ids: [@quote.kintone_record_id.to_i]
+        ids: [ @quote.kintone_record_id.to_i ]
       }
-      
+
       Rails.logger.info("[kintone-delete] Sending delete payload: #{payload.inspect}")
       with_retries { @client.delete("/k/v1/records.json", payload) }
       Rails.logger.info("[kintone-delete] Success")
@@ -38,7 +38,7 @@ module Kintone
       # 既に消えている(404)なら正常とみなす
       # GAIA_RE01: The specified record (id: ...) is not found.
       return true if e.message.include?("not found") || e.code == "GAIA_RE01"
-      
+
       Rails.logger.error("[kintone-delete] Quote##{@quote.id} delete failed: #{e.message}")
       raise
     end
@@ -87,7 +87,7 @@ module Kintone
         revision:  nil
       )
       data = with_retries { @client.put(UPDATE_PATH, body) }
-      
+
       @quote.update_columns(
         kintone_revision: data["revision"]&.to_i,
         raw_payload:      body[:record].to_json

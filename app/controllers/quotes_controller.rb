@@ -52,7 +52,7 @@ class QuotesController < ApplicationController
   # GET /quotes/1/edit
   def edit
     # set_quote で @quote は取得済み（before_action）
-    
+
     # kintone からの強制再取得は廃止し、Rails DBの内容を正とする
     # (保存直後に編集画面に戻った際、kintone同期前の古いデータで上書きされるのを防ぐため)
     @quote.items.build if @quote.items.empty?
@@ -95,9 +95,9 @@ class QuotesController < ApplicationController
     @quote = Quote.find(params[:id])
   end
 
-    # kintone の record（Hash）から QuoteItem を組み立てる
+   # kintone の record（Hash）から QuoteItem を組み立てる
 
- 
+
    def rebuild_items_from_kintone_record(record)
     subtable = record.dig("明細", "value") || []
 

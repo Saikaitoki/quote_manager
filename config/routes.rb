@@ -13,10 +13,10 @@ Rails.application.routes.draw do
 
   resources :quotes do
     collection do
-      post :sync_from_kintone  
+      post :sync_from_kintone
     end
 
-    resources :items, only: [:create, :destroy]
+    resources :items, only: [ :create, :destroy ]
   end
 
   namespace :kintone do

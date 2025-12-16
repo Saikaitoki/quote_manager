@@ -61,9 +61,9 @@ module Kintone
       end
     end
 
-    # ==========================
-    # reserve! 用: 「qty 分だけ単純加算」
-    # ==========================
+      # ==========================
+      # reserve! 用: 「qty 分だけ単純加算」
+      # ==========================
       def increment_reserved_quantity(product_code, qty)
       record = find_product_record(product_code)
       return unless record

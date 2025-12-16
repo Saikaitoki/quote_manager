@@ -1,9 +1,9 @@
 # app/services/kintone/quote_list_pull_service.rb
 module Kintone
   class QuoteListPullService
-    require 'net/http'
-    require 'uri'
-    require 'json'
+    require "net/http"
+    require "uri"
+    require "json"
 
     def initialize
       @app_id    = ENV["KINTONE_QUOTES_APP"]

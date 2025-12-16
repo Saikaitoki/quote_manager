@@ -39,10 +39,10 @@ module Kintone
     def request(method, path, body)
       uri = build_uri(path)
       req = case method
-            when :post   then Net::HTTP::Post.new(uri)
-            when :put    then Net::HTTP::Put.new(uri)
-            when :delete then Net::HTTP::Delete.new(uri)
-            end
+      when :post   then Net::HTTP::Post.new(uri)
+      when :put    then Net::HTTP::Put.new(uri)
+      when :delete then Net::HTTP::Delete.new(uri)
+      end
       req["Content-Type"] = "application/json"
       req["X-Cybozu-API-Token"] = @api_token
       Rails.logger.info("[kintone-http] method=#{method} path=#{path} body=#{body.inspect}")
@@ -64,7 +64,6 @@ module Kintone
     open_timeout: @timeout,
     read_timeout: @timeout
   ) do |http|
-
     res = http.request(req)
 
     # ---- レスポンスbodyのJSONパース ----
@@ -93,7 +92,6 @@ module Kintone
     end
   end
 end
-
   end
 
   class KintoneError < StandardError

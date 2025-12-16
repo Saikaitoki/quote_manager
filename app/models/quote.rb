@@ -104,11 +104,11 @@ class Quote < ApplicationRecord
       .transform_values { |group| group.sum { |i| i.quantity.to_i } }
   end
 
-  # ==========================
-  # 在庫差分計算用（kintone 側の旧状態）
-  # ==========================
+    # ==========================
+    # 在庫差分計算用（kintone 側の旧状態）
+    # ==========================
 
-  # ★ raw_payload を必ず Hash に正規化する
+    # ★ raw_payload を必ず Hash に正規化する
     def kintone_payload_hash
     return {} if raw_payload.blank?
 
@@ -124,26 +124,26 @@ class Quote < ApplicationRecord
 
     # 1. まずは「JSON かもしれない」前提で素直にパース
     begin
-      return JSON.parse(raw_payload)
+      JSON.parse(raw_payload)
     rescue JSON::ParserError
       # 2. ダメなら Hash.inspect 形式を JSON もどきに変換して読みにいく
       begin
         # "value"=>nil のような部分を JSON の null に変換してから
-        jsonish = raw_payload.gsub('=>nil', '=>null')
+        jsonish = raw_payload.gsub("=>nil", "=>null")
         # その上で "key"=> を "key": に変換
-        jsonish = jsonish.gsub('=>', ':')
+        jsonish = jsonish.gsub("=>", ":")
 
-        return JSON.parse(jsonish)
+        JSON.parse(jsonish)
       rescue JSON::ParserError => e
         Rails.logger.error(
           "[kintone-reserve] Quote##{id} raw_payload JSON-like parse error " \
           "#{e.class} #{e.message} class=#{raw_payload.class}"
         )
-        return {}
+        {}
       end
     end
   end
-  
+
 
 
   # ★ kintone 側の { 商品CD => 数量 } を計算
@@ -172,7 +172,7 @@ class Quote < ApplicationRecord
   def apply_stock_reservation_to_kintone
     return unless defined?(Kintone::ProductReservationService)
 
-    # 旧状態: 
+    # 旧状態:
     #   削除時 -> 直前のDB状態（@item_snapshot_for_destroy）を使用（2重解放防止）
     #   前回ステータスが「解放済」 -> 確保数0として扱う
     #   その他 -> kintone 上の前回レコード（raw_payload）を基準
@@ -183,13 +183,13 @@ class Quote < ApplicationRecord
         # 直前のステータスを確認
         # saved_changes['stock_status'] => [before, after]
         # 変更がない場合は saved_changes に含まれないので、現在の stock_status を使う
-        prev_status_str = 
-          if saved_changes.key?('stock_status')
-            saved_changes['stock_status'][0]
+        prev_status_str =
+          if saved_changes.key?("stock_status")
+            saved_changes["stock_status"][0]
           else
             stock_status # 変更なし
           end
-        
+
         # 以前の状態が「released」（解放済）だったなら、在庫確保数は 0 だったとみなす
         if prev_status_str == "released"
           {}

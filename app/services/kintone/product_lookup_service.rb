@@ -79,7 +79,7 @@ module Kintone
         code:          r.dig("商品CD", "value"),
         name:          r.dig("商品名", "value"),
         stock:         r.dig("差引実", "value"),
-        reserved_qty:    r.dig("仮押数量", "value"), 
+        reserved_qty:    r.dig("仮押数量", "value"),
         available_stock: r.dig("在庫数",   "value"), # ★ （差引実 - 仮押数量）
         price:         r.dig("上代", "value"),
         special_price: r.dig("特別上代", "value"),
