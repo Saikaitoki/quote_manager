@@ -12,5 +12,8 @@
   },
   "scripts": {
     "build": "node esbuild.config.js"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "^0.27.1"
   }
 }
