@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_15_073010) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_17_050841) do
   create_table "items", force: :cascade do |t|
     t.integer "amount"
     t.string "catalog_no"
@@ -31,16 +31,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_15_073010) do
     t.datetime "updated_at", null: false
     t.integer "upper_price"
     t.index ["quote_id"], name: "index_items_on_quote_id"
-  end
-
-  create_table "itmes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "product_name"
-    t.integer "quantity"
-    t.integer "quote_id", null: false
-    t.integer "until_price"
-    t.datetime "updated_at", null: false
-    t.index ["quote_id"], name: "index_itmes_on_quote_id"
   end
 
   create_table "quotes", force: :cascade do |t|
@@ -68,5 +58,4 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_15_073010) do
   end
 
   add_foreign_key "items", "quotes"
-  add_foreign_key "itmes", "quotes"
 end

@@ -7,13 +7,24 @@ class QuotesController < ApplicationController
     @quotes = Quote.all
 
     # 検索: キーワード (得意先コード完全一致 OR 得意先名部分一致)
-    if params[:q].present? && params[:q][:keyword].present?
-      keyword = params[:q][:keyword]
-      @quotes = @quotes.where(
-        "customer_code = :exact OR customer_name LIKE :partial",
-        exact: keyword,
-        partial: "%#{keyword}%"
-      )
+    # 検索: キーワード (得意先コード完全一致 OR 得意先名部分一致)
+    if params[:q].present?
+      q = params[:q]
+      
+      # 既存のキーワード検索
+      if q[:keyword].present?
+        keyword = q[:keyword]
+        @quotes = @quotes.where(
+          "customer_code = :exact OR customer_name LIKE :partial",
+          exact: keyword,
+          partial: "%#{keyword}%"
+        )
+      end
+
+      # 新規追加: ステータス・担当者・日付
+      @quotes = @quotes.by_status(q[:status])
+      @quotes = @quotes.by_staff(q[:staff_name])
+      @quotes = @quotes.by_date_range(q[:date_from], q[:date_to])
     end
 
     @quotes = @quotes.recent

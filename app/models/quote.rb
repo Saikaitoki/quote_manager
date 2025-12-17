@@ -19,6 +19,28 @@ class Quote < ApplicationRecord
   scope :failed,  -> { where(status: "failed") }
   scope :recent,  -> { order(created_on: :desc) }
 
+  scope :by_status, ->(status) {
+    return all if status.blank? || status == "all"
+    where(status: status)
+  }
+
+  scope :by_staff, ->(staff_name) {
+    return all if staff_name.blank?
+    where("staff_name LIKE ?", "%#{staff_name}%")
+  }
+
+  scope :by_date_range, ->(start_date, end_date) {
+    return all if start_date.blank? && end_date.blank?
+
+    if start_date.present? && end_date.present?
+      where(created_on: start_date..end_date)
+    elsif start_date.present?
+      where("created_on >= ?", start_date)
+    else
+      where("created_on <= ?", end_date)
+    end
+  }
+
   # -----------------------------------
   # キャッシュが新しいかどうか
   # -----------------------------------

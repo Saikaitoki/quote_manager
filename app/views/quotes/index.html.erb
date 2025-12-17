@@ -19,15 +19,40 @@
   <div class="card mb-4 shadow-sm">
     <div class="card-body">
       <%= form_with url: quotes_path, method: :get, local: true, class: "row g-3 align-items-end" do |f| %>
-        <div class="col-md-8 col-12">
-          <label class="form-label small text-muted">検索キーワード</label>
-          <%= f.text_field "q[keyword]", value: params.dig(:q, :keyword), class: "form-control", placeholder: "得意先コード または 得意先名" %>
+        <!-- キーワード -->
+        <div class="col-md-3 col-6">
+          <label class="form-label small text-muted">キーワード</label>
+          <%= f.text_field "q[keyword]", value: params.dig(:q, :keyword), class: "form-control form-control-sm", placeholder: "得意先コード, 得意先名" %>
         </div>
-        <div class="col-md-2 col-6 d-grid">
-          <%= f.submit "検索", class: "btn btn-dark" %>
+
+        <!-- 担当者 -->
+        <div class="col-md-2 col-6">
+          <label class="form-label small text-muted">担当者</label>
+          <%= f.text_field "q[staff_name]", value: params.dig(:q, :staff_name), class: "form-control form-control-sm", placeholder: "担当者名" %>
         </div>
-        <div class="col-md-2 col-6 d-grid">
-           <%= link_to "クリア", quotes_path, class: "btn btn-outline-secondary" %>
+
+        <!-- ステータス -->
+        <div class="col-md-2 col-4">
+          <label class="form-label small text-muted">同期状態</label>
+          <%= f.select "q[status]", 
+                options_for_select([["すべて", "all"], ["同期済", "synced"], ["未同期", "pending"], ["失敗", "failed"]], params.dig(:q, :status) || "all"),
+                {}, class: "form-select form-select-sm" %>
+        </div>
+
+        <!-- 日付範囲 -->
+        <div class="col-md-3 col-8">
+           <label class="form-label small text-muted">見積作成日</label>
+           <div class="input-group input-group-sm">
+             <%= f.date_field "q[date_from]", value: params.dig(:q, :date_from), class: "form-control" %>
+             <span class="input-group-text">〜</span>
+             <%= f.date_field "q[date_to]", value: params.dig(:q, :date_to), class: "form-control" %>
+           </div>
+        </div>
+
+        <!-- ボタン類 -->
+        <div class="col-md-2 col-12 d-flex gap-2">
+          <%= f.submit "検索", class: "btn btn-dark btn-sm flex-grow-1" %>
+          <%= link_to "クリア", quotes_path, class: "btn btn-outline-secondary btn-sm" %>
         </div>
       <% end %>
     </div>
