@@ -51,7 +51,9 @@
                      class="form-control form-control-sm"
                      id="item_rate"
                      autocomplete="off"
-                     inputmode="decimal" step="0.01">
+                     inputmode="decimal" step="0.01"
+                     enterkeyhint="done"
+                     onkeydown="if(event.key==='Enter'){this.blur();}">
             </div>
           </div>
 
@@ -62,7 +64,8 @@
               <input type="text"
                      class="form-control form-control-sm"
                      id="item_product_name"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
           </div>
 
@@ -73,7 +76,8 @@
               <input type="number"
                      class="form-control form-control-sm"
                      id="item_stock"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
 
             <div class="col-6 col-md-3">
@@ -81,7 +85,8 @@
               <input type="number"
                      class="form-control form-control-sm"
                      id="item_inner_qty"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
           </div>
 
@@ -92,7 +97,8 @@
               <input type="number"
                      class="form-control form-control-sm"
                      id="item_lower_price"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
 
             <div class="col-6 col-md-3">
@@ -100,7 +106,8 @@
               <input type="number"
                      class="form-control form-control-sm"
                      id="item_amount"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
           </div>
 
@@ -111,7 +118,8 @@
               <input type="text"
                      class="form-control form-control-sm"
                      id="item_catalog_no"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>         
 
             <div class="col-6 col-md-3">
@@ -119,7 +127,8 @@
               <input type="text"
                      class="form-control form-control-sm"
                      id="item_row"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
           </div>
 
@@ -130,7 +139,8 @@
               <input type="text"
                      class="form-control form-control-sm"
                      id="item_page"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
 
             <div class="col-6 col-md-3">
@@ -138,7 +148,8 @@
               <input type="text"
                      class="form-control form-control-sm"
                      id="item_package"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
           </div>
 
@@ -149,7 +160,8 @@
               <input type="number"
                      class="form-control form-control-sm"
                      id="item_price"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
 
             <div class="col-6 col-md-3">
@@ -157,7 +169,8 @@
               <input type="number"
                      class="form-control form-control-sm"
                      id="item_special_price"
-                     autocomplete="off">
+                     autocomplete="off"
+                     readonly>
             </div>
           </div>
 
@@ -165,11 +178,11 @@
       </div>
 
       <!-- フッター -->
-      <div class="modal-footer py-2">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+      <div class="modal-footer py-2 justify-content-between">
+        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal" style="width: 30%;">
           キャンセル
         </button>
-        <button type="button" class="btn btn-sm btn-primary" id="saveItem">
+        <button type="button" class="btn btn-primary btn-lg" id="saveItem" style="width: 65%;">
           明細を保存
         </button>
       </div>
