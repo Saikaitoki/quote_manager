@@ -38,7 +38,7 @@ class QuotesController < ApplicationController
 
     count = 0
     records.each do |record|
-      Quote.upsert_from_kintone!(record: record)
+      Kintone::QuoteImporter.import(record: record)
       count += 1
     end
 

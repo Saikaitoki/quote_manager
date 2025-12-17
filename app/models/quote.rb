@@ -52,32 +52,7 @@ class Quote < ApplicationRecord
   # kintone → Rails(DB) 保存
   # （一覧・編集画面のキャッシュ更新で使用）
   # -----------------------------------
-  def self.upsert_from_kintone!(record:, record_id: nil)
-    record_id ||= record.dig("$id", "value") || record["recordId"]
-    raise ArgumentError, "record_id missing" if record_id.blank?
 
-    attrs = {
-      kintone_record_id: record_id,
-
-      customer_code: record.dig("得意先コード", "value"),
-      customer_name: record.dig("得意先名",   "value"),
-      staff_code:    record.dig("担当者コード", "value"),
-      staff_name:    record.dig("担当者",      "value"),
-
-      created_on: parse_kintone_date(record.dig("作成日", "value")),
-      subtotal:   record.dig("小計", "value").to_i,
-
-      # ★ 「kintone の生レコード」を丸ごと保存
-      raw_payload: record,
-      status:      "synced",
-      synced_at:   Time.current
-    }
-
-    quote = find_or_initialize_by(kintone_record_id: record_id)
-    quote.assign_attributes(attrs)
-    quote.save!
-    quote
-  end
 
   # -----------------------------------
   # Rails → kintone の payload 生成
@@ -126,119 +101,16 @@ class Quote < ApplicationRecord
       .transform_values { |group| group.sum { |i| i.quantity.to_i } }
   end
 
-    # ==========================
-    # 在庫差分計算用（kintone 側の旧状態）
-    # ==========================
-
-    # ★ raw_payload を必ず Hash に正規化する
-    def kintone_payload_hash
-    return {} if raw_payload.blank?
-
-    # すでに Hash ならそのまま返す
-    return raw_payload if raw_payload.is_a?(Hash)
-
-    unless raw_payload.is_a?(String)
-      Rails.logger.error(
-        "[kintone-reserve] Quote##{id} raw_payload unexpected class=#{raw_payload.class}"
-      )
-      return {}
-    end
-
-    # 1. まずは「JSON かもしれない」前提で素直にパース
-    begin
-      JSON.parse(raw_payload)
-    rescue JSON::ParserError
-      # 2. ダメなら Hash.inspect 形式を JSON もどきに変換して読みにいく
-      begin
-        # "value"=>nil のような部分を JSON の null に変換してから
-        jsonish = raw_payload.gsub("=>nil", "=>null")
-        # その上で "key"=> を "key": に変換
-        jsonish = jsonish.gsub("=>", ":")
-
-        JSON.parse(jsonish)
-      rescue JSON::ParserError => e
-        Rails.logger.error(
-          "[kintone-reserve] Quote##{id} raw_payload JSON-like parse error " \
-          "#{e.class} #{e.message} class=#{raw_payload.class}"
-        )
-        {}
-      end
-    end
-  end
-
-
-
-  # ★ kintone 側の { 商品CD => 数量 } を計算
-  def kintone_items_quantity_by_product_code
-    payload = kintone_payload_hash
-    return {} if payload.blank?
-
-    rows = payload.dig("明細", "value") || []
-
-    rows.each_with_object(Hash.new(0)) do |row, hash|
-      value = row["value"] || {}
-      code  = value.dig("商品CD", "value")
-      qty   = value.dig("数量",  "value").to_i
-
-      next if code.blank? || qty <= 0
-
-      hash[code] += qty
-    end
-  end
-
   private
 
   # ==========================
   # 在庫仮押し差分を kintone に反映
   # ==========================
+  # ==========================
+  # 在庫仮押し差分を kintone に反映
+  # ==========================
   def apply_stock_reservation_to_kintone
-    return unless defined?(Kintone::ProductReservationService)
-
-    # 旧状態:
-    #   削除時 -> 直前のDB状態（@item_snapshot_for_destroy）を使用（2重解放防止）
-    #   前回ステータスが「解放済」 -> 確保数0として扱う
-    #   その他 -> kintone 上の前回レコード（raw_payload）を基準
-    old_items =
-      if destroyed? && @item_snapshot_for_destroy
-        @item_snapshot_for_destroy
-      else
-        # 直前のステータスを確認
-        # saved_changes['stock_status'] => [before, after]
-        # 変更がない場合は saved_changes に含まれないので、現在の stock_status を使う
-        prev_status_str =
-          if saved_changes.key?("stock_status")
-            saved_changes["stock_status"][0]
-          else
-            stock_status # 変更なし
-          end
-
-        # 以前の状態が「released」（解放済）だったなら、在庫確保数は 0 だったとみなす
-        if prev_status_str == "released"
-          {}
-        elsif kintone_record_id.present? && raw_payload.present?
-          kintone_items_quantity_by_product_code
-        else
-          {}
-        end
-      end
-
-    # 新状態: Rails 側の items（今回保存した内容）
-    new_items =
-      if destroyed?
-        {}
-      else
-        items_quantity_by_product_code
-      end
-
-    Rails.logger.info("[reserve-debug] Quote##{id} old_items=#{old_items} new_items=#{new_items}")
-
-    Kintone::ProductReservationService
-      .new(self)
-      .update_reservation!(old_items: old_items, new_items: new_items)
-
-  rescue => e
-    Rails.logger.error("[kintone-reserve] Quote##{id} #{e.class} #{e.message}")
-    Rails.logger.error("[kintone-reserve] details=#{e.details.inspect}") if e.respond_to?(:details)
+    Kintone::QuoteStockReserver.new(self).update_reservation!
   end
 
   # 削除前に現在のアイテム状態を退避（dependent: :destroy より先に実行する必要あり）
@@ -285,11 +157,5 @@ class Quote < ApplicationRecord
     Rails.logger.error("[kintone-delete] Quote##{id} #{e.class} #{e.message}")
   end
 
-  # --------------------------
-  # kintone 文字列 → Date 変換
-  # --------------------------
-  def self.parse_kintone_date(value)
-    return nil if value.blank?
-    Date.parse(value) rescue nil
-  end
+
 end
