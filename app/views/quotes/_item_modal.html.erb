@@ -16,7 +16,7 @@
 
           <!-- 商品コード（上部に単独配置） -->
           <div class="row g-2 mb-2">
-            <div class="col-6 col-md-3">
+            <div class="col-12">
               <label for="item_product_cd" class="form-label mb-1">商品コード</label>
               <div class="input-group input-group-sm">
                 <input type="text"
@@ -177,14 +177,19 @@
         </div>
       </div>
 
-      <!-- フッター -->
-      <div class="modal-footer py-2 justify-content-between">
-        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal" style="width: 30%;">
-          キャンセル
-        </button>
-        <button type="button" class="btn btn-primary btn-lg" id="saveItem" style="width: 65%;">
-          明細を保存
-        </button>
+      <div class="modal-footer py-2">
+        <div class="row w-100 g-2">
+          <div class="col-6">
+            <button type="button" class="btn btn-secondary btn-lg w-100" data-bs-dismiss="modal">
+              キャンセル
+            </button>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-primary btn-lg w-100" id="saveItem">
+              追加
+            </button>
+          </div>
+        </div>
       </div>
 
     </div>
