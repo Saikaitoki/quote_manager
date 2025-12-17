@@ -16,16 +16,17 @@
 
           <!-- 商品コード（上部に単独配置） -->
           <div class="row g-2 mb-2">
-            <div class="col-12 col-md-5">
+            <div class="col-6 col-md-3">
               <label for="item_product_cd" class="form-label mb-1">商品コード</label>
               <div class="input-group input-group-sm">
-                <input type="tel"
-                       class="form-control"
+                <input type="number"
+                       class="form-control form-control-sm"
                        id="item_product_cd"
                        autocomplete="off"
+                       enterkeyhint="enter"
                        inputmode="numeric" pattern="[0-9]*">
                 <button type="button"
-                        class="btn btn-outline-secondary"
+                        class="btn btn-outline-secondary btn-sm"
                         id="lookupProductBtn">
                   検索
                 </button>
