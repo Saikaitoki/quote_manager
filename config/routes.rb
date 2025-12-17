@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "home/index"
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -25,5 +25,5 @@ Rails.application.routes.draw do
     get "staffs/lookup",    to: "staffs#lookup"
   end
 
-  root "home#index"
+  root "quotes#index"
 end

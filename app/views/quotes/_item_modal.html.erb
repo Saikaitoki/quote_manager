@@ -19,11 +19,11 @@
             <div class="col-12 col-md-5">
               <label for="item_product_cd" class="form-label mb-1">商品コード</label>
               <div class="input-group input-group-sm">
-                <input type="text"
+                <input type="tel"
                        class="form-control"
                        id="item_product_cd"
                        autocomplete="off"
-                       data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
+                       inputmode="numeric" pattern="[0-9]*">
                 <button type="button"
                         class="btn btn-outline-secondary"
                         id="lookupProductBtn">
@@ -41,7 +41,7 @@
                      class="form-control form-control-sm"
                      id="item_quantity"
                      autocomplete="off"
-                     data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
+                     inputmode="numeric" pattern="[0-9]*">
             </div>
 
             <div class="col-6 col-md-3">
@@ -50,7 +50,7 @@
                      class="form-control form-control-sm"
                      id="item_rate"
                      autocomplete="off"
-                     data-action="focus->numpad#open" inputmode="numeric" pattern="[0-9]*">
+                     inputmode="decimal" step="0.01">
             </div>
           </div>
 
