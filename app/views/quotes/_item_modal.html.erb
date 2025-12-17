@@ -1,7 +1,7 @@
 <!-- app/views/quotes/_item_modal.html.erb -->
 
 <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg"><!-- 少し小さめ -->
+  <div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-sm-down"><!-- 少し小さめ -->
     <div class="modal-content">
 
       <!-- ヘッダー -->
@@ -19,12 +19,12 @@
             <div class="col-6 col-md-3">
               <label for="item_product_cd" class="form-label mb-1">商品コード</label>
               <div class="input-group input-group-sm">
-                <input type="number"
+                <input type="text"
                        class="form-control form-control-sm"
                        id="item_product_cd"
                        autocomplete="off"
                        enterkeyhint="enter"
-                       inputmode="numeric" pattern="[0-9]*">
+                       inputmode="decimal">
                 <button type="button"
                         class="btn btn-outline-secondary btn-sm"
                         id="lookupProductBtn">
