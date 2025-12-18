@@ -116,21 +116,29 @@ function initializeQuoteItems() {
   // ---------------------------
   // 既存カードに data-item を補完＋ハンドラ付与
   // ---------------------------
-  const existingCards = document.querySelectorAll(".quote-item-card");
-  existingCards.forEach((card) => {
-    // data-item がなければ hidden から補完
-    if (!card.dataset.item) {
-      const data = {};
-      Object.keys(FIELD_ID_MAP).forEach((key) => {
-        const hidden = card.querySelector(`[name*="[${key}]"]`);
-        data[key] = hidden ? hidden.value : "";
-      });
-      card.dataset.item = JSON.stringify(data);
-    }
+  function bindAllCards() {
+    const existingCards = document.querySelectorAll(".quote-item-card");
+    existingCards.forEach((card) => {
+      // data-item がなければ hidden から補完
+      if (!card.dataset.item) {
+        const data = {};
+        Object.keys(FIELD_ID_MAP).forEach((key) => {
+          const hidden = card.querySelector(`[name*="[${key}]"]`);
+          data[key] = hidden ? hidden.value : "";
+        });
+        card.dataset.item = JSON.stringify(data);
+      }
 
-    // クリックハンドラを付与
-    setupCardHandlers(card);
-  });
+      // クリックハンドラを付与
+      setupCardHandlers(card);
+    });
+  }
+
+  // 初回実行
+  bindAllCards();
+
+  // 外部公開 (AutosaveController用)
+  window.rebindQuoteItems = bindAllCards;
 
   // ======================
   //  行追加ボタン（＋行を追加）

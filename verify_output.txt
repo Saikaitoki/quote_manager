@@ -1,0 +1,30 @@
+--- Starting Stock Logic Verification ---
+
+[Action] Creating new quote...
+
+=== [Mock] ProductReservationService#update_reservation! Called ===
+Quote ID: 165
+OLD Items: {}
+NEW Items: {"A001"=>10, "B002"=>5}
+===============================================================
+[Mock] QuoteSyncService#sync! skipped
+
+[Action] Updating quote (A001: 10->15, B002: 5->0(delete))...
+
+=== [Mock] ProductReservationService#update_reservation! Called ===
+Quote ID: 165
+OLD Items: {}
+NEW Items: {"A001"=>10, "B002"=>5}
+===============================================================
+[Mock] QuoteSyncService#sync! skipped
+
+[Action] Deleting quote...
+
+=== [Mock] ProductReservationService#update_reservation! Called ===
+Quote ID: 165
+OLD Items: {"A001"=>10, "B002"=>5}
+NEW Items: {}
+===============================================================
+[Mock] QuoteSyncService#delete! skipped
+
+--- Verification Finished ---
