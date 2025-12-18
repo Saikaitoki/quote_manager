@@ -22,9 +22,18 @@ export default class extends Controller {
         console.log("Quotes Autosaved", data)
     }
 
-    // フォーム送信成功時にクリア
-    clear() {
+    // フォーム送信成功時にクリア＆連打防止
+    clear(event) {
         localStorage.removeItem(this.storageKey)
+
+        // 送信ボタンを無効化
+        // event.submitter はモダンブラウザ(PC/Mobile)で対応
+        const button = event.submitter
+        if (button) {
+            button.disabled = true
+            button.dataset.originalText = button.innerText
+            button.innerText = "処理中..."
+        }
     }
 
     restoreIfNeeded() {
