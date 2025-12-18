@@ -37,6 +37,8 @@
   </div>
 
   <!-- hidden fields -->
+  <%= f.hidden_field :id, class: "item-id" %>
+  <%= f.hidden_field :_destroy, class: "destroy-flag" %>
   <%= f.hidden_field :product_cd %>
   <%= f.hidden_field :product_name %>
   <%= f.hidden_field :difference_actual %>

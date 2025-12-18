@@ -146,8 +146,21 @@ export default class extends Controller {
             // 削除
             if (e.target.closest(".remove-item")) {
                 e.preventDefault()
-                card.remove()
-                this.save() // 削除も保存
+
+                // 既存レコード（IDがある）場合は、_destroy フラグを立てて隠すだけ
+                const idField = card.querySelector(".item-id")
+                if (idField && idField.value) {
+                    const destroyField = card.querySelector(".destroy-flag")
+                    if (destroyField) {
+                        destroyField.value = "1"
+                        card.style.display = "none"
+                    }
+                } else {
+                    // 新規追加分（IDなし）は DOM から削除してOK
+                    card.remove()
+                }
+
+                this.save() // 削除も保存（隠した状態も保存される）
                 return
             }
 
@@ -188,8 +201,26 @@ export default class extends Controller {
         card.querySelector(".quantity_cell")?.replaceChildren(document.createTextNode(data.quantity || ""))
         card.querySelector(".rate_cell")?.replaceChildren(document.createTextNode(data.rate || ""))
 
+        // 隠しフィールドの復元
         for (const key in data) {
+            // id や _destroy も含む
             const input = card.querySelector(`[name*="[${key}]"]`)
+
+            // _destroy 用の special handling: クラス指定があればそちら優先（name属性が複雑なため）
+            if (key === "_destroy" && data[key] === "1") {
+                const destroyInput = card.querySelector(".destroy-flag")
+                if (destroyInput) destroyInput.value = "1"
+                card.style.display = "none"
+                continue
+            }
+
+            // id 用
+            if (key === "id") {
+                const idInput = card.querySelector(".item-id")
+                if (idInput) idInput.value = data[key]
+                continue
+            }
+
             if (input) input.value = data[key]
         }
     }

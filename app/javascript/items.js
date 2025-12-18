@@ -94,7 +94,19 @@ function initializeQuoteItems() {
       // 削除ボタンクリック
       if (e.target.closest(".remove-item")) {
         e.preventDefault();
-        card.remove();
+
+        // 既存レコード（IDがある）場合は、_destroy フラグを立てて隠すだけ
+        const idField = card.querySelector(".item-id");
+        if (idField && idField.value) {
+          const destroyField = card.querySelector(".destroy-flag");
+          if (destroyField) {
+            destroyField.value = "1";
+            card.style.display = "none";
+          }
+        } else {
+          // 新規追加分（IDなし）は DOM から削除してOK
+          card.remove();
+        }
         return;
       }
 
