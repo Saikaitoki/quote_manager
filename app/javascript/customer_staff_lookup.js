@@ -25,7 +25,12 @@ document.addEventListener("turbo:load", () => {
 
   function setValue(el, value) {
     if (!el) return;
+    const old = el.value;
     el.value = value == null ? "" : String(value);
+    if (old !== el.value) {
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    }
   }
 
   // ===== 得意先ルックアップ =====

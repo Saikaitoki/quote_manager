@@ -105,7 +105,14 @@ function initializeQuoteItems() {
           }
         } else {
           // 新規追加分（IDなし）は DOM から削除してOK
+          const parent = card.parentElement;
           card.remove();
+          if (parent) parent.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        // Notify autosave (for hidden case)
+        if (card.style.display === "none") {
+          card.dispatchEvent(new Event("input", { bubbles: true }));
         }
         return;
       }
@@ -185,6 +192,8 @@ function initializeQuoteItems() {
           updateCardDisplay(editingCard, itemData);
           editingCard.dataset.item = JSON.stringify(itemData);
           editingCard = null;
+          // Notify autosave
+          itemsContainer.dispatchEvent(new Event("input", { bubbles: true }));
         } else {
           // ==========================
           // 新規追加（template から fragment を生成）
@@ -219,6 +228,9 @@ function initializeQuoteItems() {
           updateCardDisplay(newCard, itemData);
           newCard.dataset.item = JSON.stringify(itemData);
           setupCardHandlers(newCard); // ★新規カードにもハンドラ
+
+          // Notify autosave
+          itemsContainer.dispatchEvent(new Event("input", { bubbles: true }));
         }
 
         modalInstance.hide();
