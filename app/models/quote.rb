@@ -1,7 +1,7 @@
 class Quote < ApplicationRecord
   enum :stock_status, { secured: "secured", released: "released" }
 
-  has_many :items, class_name: "QuoteItem", dependent: :destroy
+  has_many :items, -> { order(created_at: :desc) }, class_name: "QuoteItem", dependent: :destroy
   accepts_nested_attributes_for :items, allow_destroy: true
 
   # コントローラーでのリダイレクト制御用（DB保存しない）

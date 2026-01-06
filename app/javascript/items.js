@@ -220,7 +220,7 @@ function initializeQuoteItems() {
           const container = document.getElementById("items-container");
           if (container) {
             // 新規は上に追加したいなら prepend, 下なら append
-            container.appendChild(newCard);
+            container.prepend(newCard);
           } else {
             console.error("#items-container が見つかりません");
           }

@@ -101,12 +101,6 @@
   <!-- ✅ 商品明細 -->
   <h5 class="fw-bold mt-4 mb-3">商品明細</h5>
 
-  <div id="items-container" class="mt-2">
-    <%= f.fields_for :items do |item_form| %>
-      <%= render "item_fields", f: item_form %>
-    <% end %>
-  </div>
-
   <!-- 行追加ボタン -->
   <div class="mb-3 d-grid d-md-block">
     <button type="button"
@@ -117,6 +111,14 @@
       ＋ 行を追加
     </button>
   </div>
+
+  <div id="items-container" class="mt-2">
+    <%= f.fields_for :items do |item_form| %>
+      <%= render "item_fields", f: item_form %>
+    <% end %>
+  </div>
+
+
 
   <!-- 登録・戻るボタン -->
   <div class="d-flex justify-content-between mt-4">
