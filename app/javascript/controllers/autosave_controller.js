@@ -274,24 +274,6 @@ export default class extends Controller {
                 if (el) el.value = data[key] || ""
             })
 
-            // 編集中のカードを items.js に知らせる必要があるが、変数 scope が違う。
-            // items.js: `let editingCard = null;`
-            // ここで modal を開いても、保存ボタンを押したとき items.js は `editingCard` が null だと判断して「新規追加」してしまう。
-
-            // これはマズい。items.js との連携が必須。
-            // リファクタリングで `items.js` を Class化 または グローバル化しておけばよかった。
-            //
-            // 【解決策】
-            // 復元後、「一度画面をリロードしてください」と促すのが安全だがUX悪い。
-            //
-            // もしくは、items.js に「現在編集中のカード」を保存させるための DOM経由の穴を開ける。
-            // 例: hidden input `#editing-card-index` とか。
-            // items.js はそれを読んで...いない。
-            //
-            // ★今回は「復元時は items.js の管理外」になってしまう問題を回避するため、
-            // items.js を修正して `window.initQuoteItems()` などを公開させるのが正攻法。
-            // 
-            // 予定変更: items.js に少し手を入れて、外部から初期化を呼べるようにする。
         })
     }
 }

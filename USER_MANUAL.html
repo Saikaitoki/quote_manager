@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>見積書作成アプリ 取扱説明書</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            border-left: 5px solid #3498db;
+            padding-left: 10px;
+            background-color: #eaf2f8;
+            padding: 8px 10px;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        strong {
+            color: #e74c3c;
+        }
+
+        .image-placeholder {
+            background-color: #fff;
+            border: 2px dashed #bbb;
+            color: #777;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .toc {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            border-bottom: none;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .toc ul li {
+            margin-bottom: 5px;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>見積書作成アプリ 取扱説明書</h1>
+
+    <h2 id="section1">1. はじめに</h2>
+    <p>本システムは、見積書の作成、編集を行うためのWebアプリケーションです。</p>
+    <p>社用のandroid端末に最適化されています。特にバーコードリーダーを使用する際は、android端末での使用をお勧めします。</p>
+    <p>kintone上に<strong>仮押在庫</strong>という項目を設定しています。</p>
+    <ul>
+        <li><strong>仮押在庫</strong>: 商品毎に見積上で登録された数量を合計して記録しています。</li>
+    </ul>
+
+    <h2 id="section2">2. ログイン・アクセス方法</h2>
+    <p>Webブラウザ（Chrome, Safariなど）を使用してシステムにアクセスします。</p>
+    <p>https://quote-manager-yqg8.onrender.comこちらのリンクからアクセスしてください</p>
+    <ul>
+        <li><strong>推奨ブラウザ</strong>: Google Chrome, Safari, Microsoft Edge</li>
+        <li><strong>モバイル利用</strong>: スマートフォンのブラウザメニューから「ホーム画面に追加」を行うことで、アプリアイコンから直接起動できるようになります（PWA対応）。</li>
+    </ul>
+
+    <h2 id="section3">3. 画面の見方と基本操作</h2>
+
+    <h3>3.1 見積一覧画面（ホーム）</h3>
+    <p>ログインすると最初に表示される画面です。登録済みの見積データが一覧で表示されます。</p>
+
+    <ul>
+        <li><strong>PC表示</strong>: 詳細な情報が表形式で表示されます。</li>
+        <li><strong>スマホ表示</strong>: 重要な情報をカード形式で見やすく表示します。</li>
+    </ul>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/見積一覧.png" alt="見積一覧画面（スマホ版）"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <h4>検索・フィルタ機能</h4>
+    <p>画面上部の検索エリアを使用して、目的の見積を探すことができます。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/検索機能.png" alt="検索機能"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <ul>
+        <li><strong>キーワード</strong>: 得意先コードや得意先名で検索します。</li>
+        <li><strong>担当者</strong>: 担当者名で絞り込みます。</li>
+        <li><strong>同期状態</strong>: Kintoneとの連携状態（同期済/未同期/失敗）でフィルタリングします。</li>
+        <li><strong>見積作成日</strong>: 指定した期間に作成された見積を表示します。</li>
+    </ul>
+
+    <h4>Kintone同期</h4>
+    <p>「kintone から最新を取得」ボタンを押すと、Kintone上の最新データを取得し、システムに反映させます。</p>
+    <p>kintone上でデータを編集した際に押してください。</p>
+
+
+    <h4>在庫ステータス変更</h4>
+    <p>一覧のプルダウンから、在庫の確保状況（確保中/解放済）を直接変更できます。</p>
+    <p>解放済に変更すると仮押在庫から数量が引かれます。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/ステータス変更.png" alt="ステータス変更"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <h2 id="section4">4. 見積の作成・編集手順</h2>
+
+    <h3>4.1 新規作成</h3>
+    <p>一覧画面の「＋ 新規作成」ボタンをクリックすると、作成画面に移動します。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/新規作成モーダル.png" alt="新規作成モーダル"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <h3>4.2 基本情報の入力</h3>
+    <p>得意先や担当者、備考などのヘッダー情報を入力します。</p>
+
+    <ul>
+        <li><strong>得意先コード</strong>: 入力して検索ボタンを押すと、得意先名や掛率設定が自動入力されます。</li>
+        <li><strong>担当者コード</strong>: 入力して検索ボタンを押すと、担当者名が自動入力されます。</li>
+        <li><strong>掛率</strong>: 得意先マスタから参照します。商品登録時に自動入力されますので、変更する場合は事前に行ってください。</li>
+    </ul>
+
+
+
+    <h3>4.3 商品明細の追加</h3>
+    <p>「＋ 行を追加」ボタンを押して、商品追加モーダルを開きます。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/商品追加モーダル.png" alt="商品追加モーダル"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <ol>
+        <li>
+            <strong>商品検索</strong>: 商品コード（JANコード等）を入力します。スキャナーで読み取ると自動的に検索され、詳細が表示されます。
+            <div style="text-align: left; margin: 20px 0;">
+                <img src="manual_img/商品入力.png" alt="商品入力"
+                    style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            </div>
+        </li>
+        <li>
+            <strong>数量・掛率の入力</strong>: 数量と掛率を入力します。
+
+            <div class="note">
+                <strong>(注) 掛率の自動適用について</strong><br>
+                以下の優先順位で掛率が決定されます。<br>
+                <ol>
+                    <li><strong>手入力</strong>: この画面で直接入力した値が最優先されます。</li>
+                    <li><strong>自動計算</strong>: 何も入力しない場合、得意先ごとに設定された掛率ルール（商品カタログNoの種類による分類）に基づいて自動的に入力されます。</li>
+                </ol>
+            </div>
+        </li>
+        <li><strong>追加</strong>: 「追加」ボタンを押すと、見積明細に行が追加されます。</li>
+    </ol>
+
+    <h3>4.4 明細の編集・削除</h3>
+    <p>追加した明細行は、数量や掛率を直接編集したり、削除ボタンで削除したりできます。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/明細テーブル.png" alt="明細テーブル"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <h2 id="section5">5. 見積書の印刷</h2>
+    <h3>1. kintoneへログイン</h3>
+    <p><a href="https://ahb4o.cybozu.com/k/126/" target="_blank">https://ahb4o.cybozu.com/k/126/</a>
+        こちらのリンクからkintoneにログインしてください。</p>
+    <ul>
+        <li><strong>ユーザー名</strong>: 営業共有</li>
+        <li><strong>パスワード</strong>: saikai5555</li>
+    </ul>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/kintoneログイン.png" alt="kintoneログイン"
+            style="max-width: 290px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <h3>2. 見積の選択</h3>
+    <p>一覧の中から印刷したい見積をクリックしてください。</p>
+    <p>複数の見積をまとめて印刷することはできません。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/見積一覧kintone.png" alt="見積一覧kintone"
+            style="max-width: 290px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+
+
+    <h3>3. 印刷</h3>
+    <p>オレンジ色の出力ボタンを押してください。</p>
+    <p>PDFファイルが作成されますので印刷してください。</p>
+
+
+
+    <h2 id="section6">6. よくある質問 (Q&A)</h2>
+
+    <p><strong>Q. スキャナーで読み取っても反応しません。</strong></p>
+    <p>A. 入力欄にカーソルが当たっていることを確認してください。また、端末のキーボード設定が日本語入力（IME）になっていると誤動作することがあるため、入力モードを「半角英数」に切り替えてお試しください。</p>
+
+    <p><strong>Q. 入力中のデータは保存されますか？</strong></p>
+    <p>A. はい、ブラウザに一時的に自動保存（オートセーブ）されます。誤ってブラウザを閉じてしまっても、再度開いた際に復元することができます。ただし、完全に保存するには「登録する」ボタンを押して完了させてください。</p>
+
+    <div style="text-align: left; margin: 20px 0; break-inside: avoid; page-break-inside: avoid;">
+        <img src="manual_img/オートセーブ.png" alt="オートセーブ"
+            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+</body>
+
+</html>
