@@ -113,7 +113,7 @@
   </div>
 
   <div id="items-container" class="mt-2">
-    <%= f.fields_for :items do |item_form| %>
+    <%= f.fields_for :items, quote.items.order(created_at: :desc, id: :desc) do |item_form| %>
       <%= render "item_fields", f: item_form %>
     <% end %>
   </div>
