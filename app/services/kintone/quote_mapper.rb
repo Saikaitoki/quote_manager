@@ -78,7 +78,7 @@ module Kintone
     end
 
     def item_rows
-      @quote.items.reject(&:marked_for_destruction?).map do |item|
+      @quote.items.reorder(created_at: :asc, id: :asc).reject(&:marked_for_destruction?).map do |item|
         qty  = item.quantity.to_f
         rate = item.rate.to_f
 
