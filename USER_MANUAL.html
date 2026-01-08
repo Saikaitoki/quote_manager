@@ -145,14 +145,22 @@
     <h2 id="section1">1. はじめに</h2>
     <p>本システムは、見積書の作成、編集を行うためのWebアプリケーションです。</p>
     <p>社用のandroid端末に最適化されています。特にバーコードリーダーを使用する際は、android端末での使用をお勧めします。</p>
-    <p>kintone上に<strong>仮押在庫</strong>という項目を設定しています。</p>
+    <p>kintone上に仮押在庫という項目を設定しています。</p>
     <ul>
-        <li><strong>仮押在庫</strong>: 商品毎に見積上で登録された数量を合計して記録しています。</li>
+        <li><strong>仮押在庫</strong>:商品毎に見積上で登録された数量を合計して記録しています。</li>
     </ul>
+    <p>見積作成時に表示される差引実は仮押在庫を引いた数量です。</p>65+
 
     <h2 id="section2">2. ログイン・アクセス方法</h2>
     <p>Webブラウザ（Chrome, Safariなど）を使用してシステムにアクセスします。</p>
-    <p>https://quote-manager-yqg8.onrender.comこちらのリンクからアクセスしてください</p>
+    <p><a href="https://quote-manager-yqg8.onrender.com" target="_blank">https://quote-manager-yqg8.onrender.com</a>
+        こちらのリンクまたは下のQRコードからアクセスしてください。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/見積書アプリQR.png" alt="見積書アプリQRコード"
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
     <ul>
         <li><strong>推奨ブラウザ</strong>: Google Chrome, Safari, Microsoft Edge</li>
         <li><strong>モバイル利用</strong>: スマートフォンのブラウザメニューから「ホーム画面に追加」を行うことで、アプリアイコンから直接起動できるようになります（PWA対応）。</li>
@@ -170,7 +178,7 @@
 
     <div style="text-align: left; margin: 20px 0;">
         <img src="manual_img/見積一覧.png" alt="見積一覧画面（スマホ版）"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
 
     <h4>検索・フィルタ機能</h4>
@@ -178,7 +186,7 @@
 
     <div style="text-align: left; margin: 20px 0;">
         <img src="manual_img/検索機能.png" alt="検索機能"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
 
     <ul>
@@ -192,15 +200,44 @@
     <p>「kintone から最新を取得」ボタンを押すと、Kintone上の最新データを取得し、システムに反映させます。</p>
     <p>kintone上でデータを編集した際に押してください。</p>
 
-
     <h4>在庫ステータス変更</h4>
     <p>一覧のプルダウンから、在庫の確保状況（確保中/解放済）を直接変更できます。</p>
     <p>解放済に変更すると仮押在庫から数量が引かれます。</p>
 
+
     <div style="text-align: left; margin: 20px 0;">
         <img src="manual_img/ステータス変更.png" alt="ステータス変更"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
+
+    <h3>3.2 見積詳細画面</h3>
+    <p>見積登録、編集直後、または一覧画面の「詳細」ボタン、またはカード（スマホ表示時）の「詳細」ボタンを押すと、見積の詳細情報が表示されます。</p>
+    <p>この画面では、登録された見積の内容（得意先、担当者、明細など）を確認できます。</p>
+
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/見積詳細.png" alt="見積詳細"
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
+
+    <ul>
+        <li><strong>操作</strong>:
+            <ul>
+                <li><strong>一覧に戻る</strong>: 一覧画面に戻ります。</li>
+                <li><strong>編集する</strong>: この見積の編集画面へ移動します。</li>
+                <li><strong>この見積を削除</strong>: この見積を削除します。</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>3.3 見積の削除</h3>
+    <p>不要になった見積データは以下の方法で削除できます。</p>
+    <p><strong>※削除したデータは復元できませんのでご注意ください。</strong></p>
+
+    <ol>
+        <li><strong>詳細画面から削除</strong>:<br>
+            詳細画面の下部にある「この見積を削除」ボタンを押し、確認メッセージでOKを選択すると削除されます。</li>
+    </ol>
+
 
     <h2 id="section4">4. 見積の作成・編集手順</h2>
 
@@ -209,7 +246,7 @@
 
     <div style="text-align: left; margin: 20px 0;">
         <img src="manual_img/新規作成モーダル.png" alt="新規作成モーダル"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
 
     <h3>4.2 基本情報の入力</h3>
@@ -218,32 +255,37 @@
     <ul>
         <li><strong>得意先コード</strong>: 入力して検索ボタンを押すと、得意先名や掛率設定が自動入力されます。</li>
         <li><strong>担当者コード</strong>: 入力して検索ボタンを押すと、担当者名が自動入力されます。</li>
-        <li><strong>掛率</strong>: 得意先マスタから参照します。商品登録時に自動入力されますので、変更する場合は事前に行ってください。</li>
+        <li><strong>掛率</strong>:得意先マスタから参照します。商品登録時に自動入力されますので、変更する場合は事前に行ってください。</li>
     </ul>
 
-
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/掛率設定.png" alt="掛率の設定画面"
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    </div>
 
     <h3>4.3 商品明細の追加</h3>
     <p>「＋ 行を追加」ボタンを押して、商品追加モーダルを開きます。</p>
 
     <div style="text-align: left; margin: 20px 0;">
         <img src="manual_img/商品追加モーダル.png" alt="商品追加モーダル"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
 
     <ol>
         <li>
-            <strong>商品検索</strong>: 商品コード（JANコード等）を入力します。スキャナーで読み取ると自動的に検索され、詳細が表示されます。
+            <strong>商品検索</strong>: 商品コードを入力します。スキャナーで読み取ると自動的に検索され、詳細が表示されます。
+
             <div style="text-align: left; margin: 20px 0;">
                 <img src="manual_img/商品入力.png" alt="商品入力"
-                    style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             </div>
+
         </li>
         <li>
             <strong>数量・掛率の入力</strong>: 数量と掛率を入力します。
 
             <div class="note">
-                <strong>(注) 掛率の自動適用について</strong><br>
+                <strong>(注) 掛率の自動適用について</strong>:<br>
                 以下の優先順位で掛率が決定されます。<br>
                 <ol>
                     <li><strong>手入力</strong>: この画面で直接入力した値が最優先されます。</li>
@@ -259,51 +301,55 @@
 
     <div style="text-align: left; margin: 20px 0;">
         <img src="manual_img/明細テーブル.png" alt="明細テーブル"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
 
     <h2 id="section5">5. 見積書の印刷</h2>
-    <h3>1. kintoneへログイン</h3>
-    <p><a href="https://ahb4o.cybozu.com/k/126/" target="_blank">https://ahb4o.cybozu.com/k/126/</a>
-        こちらのリンクからkintoneにログインしてください。</p>
-    <ul>
-        <li><strong>ユーザー名</strong>: 営業共有</li>
-        <li><strong>パスワード</strong>: saikai5555</li>
-    </ul>
+    <p>印刷はkintoneから行います。</p>
 
-    <div style="text-align: left; margin: 20px 0;">
-        <img src="manual_img/kintoneログイン.png" alt="kintoneログイン"
-            style="max-width: 290px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    </div>
+    <ol>
+        <li><strong>kintoneへログイン</strong><br>
+            <a href="https://ahb4o.cybozu.com/k/126/" target="_blank">https://ahb4o.cybozu.com/k/126/</a>
+            こちらのリンクからkintoneにログインしてください。<br>
+            ユーザー名：　営業共有<br>
+            パスワード： saikai5555<br>
+            <div style="text-align: left; margin: 20px 0;">
+                <img src="manual_img/kintoneログイン.png" alt="kintoneログイン"
+                    style="max-width: 300px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            </div>
+        </li>
 
-    <h3>2. 見積の選択</h3>
-    <p>一覧の中から印刷したい見積をクリックしてください。</p>
-    <p>複数の見積をまとめて印刷することはできません。</p>
+        <li><strong>見積の選択</strong><br>
+            一覧の中から印刷したい見積をクリックしてください。<br>
+            複数の見積をまとめて印刷することはできません。<br>
+            <div style="text-align: left; margin: 20px 0;">
+                <img src="manual_img/見積一覧kintone.png" alt="見積一覧kintone"
+                    style="max-width: 300px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            </div>
+        </li>
 
-    <div style="text-align: left; margin: 20px 0;">
-        <img src="manual_img/見積一覧kintone.png" alt="見積一覧kintone"
-            style="max-width: 290px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    </div>
-
-
-
-    <h3>3. 印刷</h3>
-    <p>オレンジ色の出力ボタンを押してください。</p>
-    <p>PDFファイルが作成されますので印刷してください。</p>
-
-
+        <li><strong>印刷</strong><br>
+            オレンジ色の出力ボタンを押してください。<br>
+            PDFファイルが作成されますので印刷してください。
+        </li>
+    </ol>
 
     <h2 id="section6">6. よくある質問 (Q&A)</h2>
+
+    <p><strong>Q. Kintoneのデータが反映されません。</strong></p>
+    <p>A. 一覧画面の「kintone から最新を取得」ボタンを押してください。それでも反映されない場合は、作成日が検索範囲に含まれているか確認してください。</p>
 
     <p><strong>Q. スキャナーで読み取っても反応しません。</strong></p>
     <p>A. 入力欄にカーソルが当たっていることを確認してください。また、端末のキーボード設定が日本語入力（IME）になっていると誤動作することがあるため、入力モードを「半角英数」に切り替えてお試しください。</p>
 
     <p><strong>Q. 入力中のデータは保存されますか？</strong></p>
-    <p>A. はい、ブラウザに一時的に自動保存（オートセーブ）されます。誤ってブラウザを閉じてしまっても、再度開いた際に復元することができます。ただし、完全に保存するには「登録する」ボタンを押して完了させてください。</p>
+    <p>A.
+        はい、ブラウザに一時的に自動保存（オートセーブ）されます。誤ってブラウザを閉じてしまっても、再度開いた際に復元することができます。復元の際は、画像の画面で「OK」を押してください。ただし、完全に保存するには「登録する」ボタンを押して完了させてください。
+    </p>
 
-    <div style="text-align: left; margin: 20px 0; break-inside: avoid; page-break-inside: avoid;">
-        <img src="manual_img/オートセーブ.png" alt="オートセーブ"
-            style="max-width: 140px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <div style="text-align: left; margin: 20px 0;">
+        <img src="manual_img/オートセーブ.png" alt="オートセーブ復元確認ダイヤログ"
+            style="max-width: 150px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     </div>
 
 </body>
