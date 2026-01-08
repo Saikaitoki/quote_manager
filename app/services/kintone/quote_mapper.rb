@@ -90,20 +90,19 @@ module Kintone
             item.upper_price.to_f
           end
 
-        lower_price =
-          if base_price > 0 && rate > 0
-            # 掛率は 45, 50 のような百分率前提
-            (base_price * rate * 0.01).floor
-          else
-            nil
-          end
+        lower_price = item.lower_price.presence ||
+          (if base_price > 0 && rate > 0
+             (base_price * rate * 0.01).floor
+           else
+             nil
+           end)
 
-        amount =
-          if lower_price && qty > 0
-            (lower_price * qty).floor
-          else
-            nil
-          end
+        amount = item.amount.presence ||
+          (if lower_price && qty > 0
+             (lower_price * qty).floor
+           else
+             nil
+           end)
 
         {
           value: {
