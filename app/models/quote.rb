@@ -4,6 +4,16 @@ class Quote < ApplicationRecord
   has_many :items, -> { order(created_at: :desc, id: :desc) }, class_name: "QuoteItem", dependent: :destroy
   accepts_nested_attributes_for :items, allow_destroy: true
 
+  # フォームからの送信順序(DOM順)ではなく、キー(タイムスタンプ/ID)の昇順で処理することで
+  # 新規追加分の保存順序を作成順(古い→新しい)に強制する。
+  # これにより created_at DESC が意図通り「新しいものを上」に表示できるようになる。
+  def items_attributes=(attributes)
+    if attributes.is_a?(Hash)
+      attributes = attributes.sort_by { |k, _v| k.to_s.to_i }.to_h
+    end
+    super(attributes)
+  end
+
   # コントローラーでのリダイレクト制御用（DB保存しない）
   attr_accessor :redirect_to_index
 
