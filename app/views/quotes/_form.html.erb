@@ -113,7 +113,7 @@
   </div>
 
   <div id="items-container" class="mt-2">
-    <%= f.fields_for :items, quote.items.sort_by { |i| [i.created_at || Time.current, i.id || Float::INFINITY] }.reverse do |item_form| %>
+    <%= f.fields_for :items, quote.items.to_a.sort { |a, b| comp = (b.created_at || Time.current) <=> (a.created_at || Time.current); comp == 0 ? (b.id || Float::INFINITY) <=> (a.id || Float::INFINITY) : comp } do |item_form| %>
       <%= render "item_fields", f: item_form %>
     <% end %>
   </div>
