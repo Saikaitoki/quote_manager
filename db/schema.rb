@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_17_050841) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_09_022122) do
   create_table "items", force: :cascade do |t|
     t.integer "amount"
     t.string "catalog_no"
@@ -27,7 +27,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_17_050841) do
     t.decimal "rate", precision: 5, scale: 2
     t.string "row"
     t.integer "special_upper_price"
-    t.integer "unit_price"
     t.datetime "updated_at", null: false
     t.integer "upper_price"
     t.index ["quote_id"], name: "index_items_on_quote_id"
@@ -38,7 +37,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_17_050841) do
     t.date "created_on"
     t.string "customer_code"
     t.string "customer_name"
-    t.date "date"
     t.string "kintone_record_id"
     t.integer "kintone_revision"
     t.text "note"
@@ -50,7 +48,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_17_050841) do
     t.string "stock_status", default: "secured", null: false
     t.integer "subtotal", default: 0, null: false
     t.datetime "synced_at"
-    t.integer "total"
     t.datetime "updated_at", null: false
     t.index ["created_on"], name: "index_quotes_on_created_on"
     t.index ["kintone_record_id"], name: "index_quotes_on_kintone_record_id"

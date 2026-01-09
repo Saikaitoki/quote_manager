@@ -37,12 +37,11 @@
 | `ship_to_name` | string | 直送先名 |
 | `staff_code` | string | 担当者コード (Kintone連携) |
 | `staff_name` | string | 担当者名 |
-| `date` | date | (未使用 / 旧仕様?) |
+
 | `created_on` | date | 見積作成日 |
 | `note` | text | 備考 |
 | `status` | string | ステータス (`pending`, `confirmed` 等) |
 | `subtotal` | integer | 小計 |
-| `total` | integer | 合計 (未使用?) |
 | `stock_status` | string | 在庫確保ステータス (`secured`: 確保中, `released`: 解放済) |
 | `kintone_record_id` | string | 連携先のKintoneレコードID |
 | `kintone_revision` | integer | Kintoneレコードのリビジョン番号 |
@@ -59,7 +58,6 @@
 | `product_cd` | string | 商品コード |
 | `product_name` | string | 商品名 |
 | `quantity` | integer | 数量 |
-| `unit_price` | integer | (未使用? 下代を使用) |
 | `upper_price` | integer | 上代 |
 | `lower_price` | integer | 下代 (単価) |
 | `special_upper_price` | integer | 特別上代 |
