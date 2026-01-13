@@ -6,7 +6,7 @@ gem "rails", "~> 8.1.0"
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
 group :development, :test do
-  gem "sqlite3", "~> 2.7"
+  gem "sqlite3", "~> 2.8"
 end
 
 group :production do
