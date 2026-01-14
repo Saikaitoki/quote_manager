@@ -135,7 +135,15 @@ class Quote < ApplicationRecord
 
   # 明細1行分の金額を算出（kintone 送信ロジックと同じ）
   def item_amount_for_total(item)
-    qty  = item.quantity.to_f
+    qty = item.quantity.to_f
+    return 0 if qty <= 0
+
+    # ユーザーが編集した下代があればそれを優先採用
+    if item.lower_price.present? && item.lower_price > 0
+      return (item.lower_price * qty).floor
+    end
+
+    # 下代がない場合は計算（フォールバック）
     rate = item.rate.to_f
 
     base_price =
@@ -145,7 +153,7 @@ class Quote < ApplicationRecord
         item.upper_price.to_f
       end
 
-    return 0 if qty <= 0 || rate <= 0 || base_price <= 0
+    return 0 if rate <= 0 || base_price <= 0
 
     lower_price = (base_price * (rate * 0.01)).floor
     (lower_price * qty).floor
