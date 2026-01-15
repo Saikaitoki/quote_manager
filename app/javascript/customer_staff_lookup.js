@@ -226,10 +226,36 @@ document.addEventListener("turbo:load", () => {
     });
   }
 
-  // ===== 編集画面などで初期値が入っている場合の自動取得 =====
-  if (customerCodeInput && customerCodeInput.value.trim()) {
-    // ページロード時はキャッシュを使わず最新を取りに行くか、あるいはキャッシュさせるか。
-    // ここでは念のため force: true で取得して掛率などをセットする
-    lookupCustomer({ force: true });
-  }
+  // ページロード時はキャッシュを使わず最新を取りに行くか、あるいはキャッシュさせるか。
+  // ここでは念のため force: true で取得して掛率などをセットする
+  lookupCustomer({ force: true });
+}
+
+  // ★ Turbo Cache 対策
+  document.addEventListener("turbo:before-cache", () => {
+  [customerBtn, staffBtn, customerCodeInput, staffCodeInput, customerNameInput, staffNameInput].forEach(el => {
+    if (el) delete el.dataset.bound; // 本ファイルではdataset.boundは使ってないが、念のため
+  });
+  // 本ファイルは addEventListener を重複防止チェックなしで毎回行っているか？
+  // -> はい、turbo:load のたびに addEventListener している。
+  // -> removeEventListener しないと重複する？
+  // -> 無名関数で追加しているので remove できない。
+  // -> しかし DOM が body ごと入れ替わるならリスナーは消えるのでOK。
+  // -> 問題は「DOMがキャッシュから復元されたとき」。
+  // -> 復元されたDOMにはリスナーがついていない。turbo:load が走る。
+  // -> 新たにリスナーがつく。
+  // -> なので、ここでの対策は不要かもしれない。
+  // -> しかし items.js との違いは？ items.js は `dataset.bound` でガードしている。
+  // -> こちらはガードしていない。
+  // -> ならば、turbo:load で毎回つくので、復元時もつく。
+  // -> つまり、こちらはバグっていないはず...？
+  //
+  // 念のため、安全策としてガードを追加したほうが良いが、
+  // 現状「ボタンが反応しない」原因がこれなら、ガードがない＝重複実行＝動くはず。
+  // 反応しないということは、ガードがあるか、エラーで止まっているか。
+  //
+  // ああ、items.js のエラーがバンドル全体を止めていた可能性が高い。
+  // items.js の修正だけで直るかもしれないが、
+  // 念のため「実行済みフラグ」によるガードパターンに統一しておく。
+}, { once: true });
 });

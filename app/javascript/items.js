@@ -54,6 +54,32 @@ function initPage() {
 document.addEventListener("turbo:load", initPage);
 document.addEventListener("DOMContentLoaded", initPage);
 
+// ★ Turbo Cache 対策: キャッシュ保存前に data属性を消す
+// これをやらないと、戻るボタン等で復元されたときに data-bound="true" が残り、
+// リスナーが再付与されずボタンが反応しなくなる
+document.addEventListener("turbo:before-cache", () => {
+  // itemModal initialized
+  const itemModal = document.getElementById("itemModal");
+  if (itemModal) delete itemModal.dataset.initialized;
+
+  // openBtn
+  const openBtn = document.getElementById("openModalBtn");
+  if (openBtn) delete openBtn.dataset.bound;
+
+  // saveItem
+  const saveBtn = document.getElementById("saveItem");
+  if (saveBtn) delete saveBtn.dataset.bound;
+
+  // lookupProductBtn
+  const lookupBtn = document.querySelector("#itemModal #lookupProductBtn");
+  if (lookupBtn) delete lookupBtn.dataset.bound;
+
+  // enter focus elements
+  document.querySelectorAll('[data-bound="true"]').forEach(el => {
+    delete el.dataset.bound;
+  });
+});
+
 function initializeQuoteItems() {
   const itemModal = document.getElementById("itemModal");
   if (!itemModal) return;

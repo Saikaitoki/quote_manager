@@ -16,6 +16,7 @@ class Quote < ApplicationRecord
 
   # コントローラーでのリダイレクト制御用（DB保存しない）
   attr_accessor :redirect_to_index
+  attr_accessor :skip_kintone_sync
 
   # ==========================
   # ステータス管理（kintoneキャッシュ用）
@@ -163,6 +164,8 @@ class Quote < ApplicationRecord
   # kintone 同期
   # ==========================
   def sync_to_kintone_later
+    return if skip_kintone_sync
+
     Kintone::QuoteSyncService.new(self).sync!
   rescue => e
     Rails.logger.error("[kintone-sync] Quote##{id} #{e.class} #{e.message}")
