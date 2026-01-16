@@ -64,8 +64,19 @@ document.addEventListener("turbo:load", () => {
 
     const code = (customerCodeInput.value || "").trim();
 
-    // 空 → 名前クリアだけして終了
+    // 空 → コードが「意図的に削除された」なら名前も消すが、
+    // 「最初から空で、名前だけ入っている」状態（手入力モード）のときは消さないようにしたい。
+    // しかし、ユーザーが「コードを消してEnter」した場合は消したい。
+    // ここでは「force=false（blur時など）かつ、名前がすでに入っている」なら消さないようにする。
+
     if (!code) {
+      const hasName = (customerNameInput.value || "").trim().length > 0;
+      // 強制実行(ボタン/Enter) または 名前も空ならクリアする
+      // 言い換えると: 自動実行(blur) かつ 名前があるなら、なにもしないで残す
+      if (!force && hasName) {
+        return; // 名前を消さずに終わる
+      }
+
       setValue(customerNameInput, "");
       clearError(customerCodeInput, "customer_lookup_error");
       lastCustomerCode = null;
@@ -159,6 +170,11 @@ document.addEventListener("turbo:load", () => {
     const code = (staffCodeInput.value || "").trim();
 
     if (!code) {
+      const hasName = (staffNameInput.value || "").trim().length > 0;
+      if (!force && hasName) {
+        return;
+      }
+
       setValue(staffNameInput, "");
       clearError(staffCodeInput, "staff_lookup_error");
       lastStaffCode = null;
