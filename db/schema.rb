@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_09_022122) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_16_060027) do
   create_table "items", force: :cascade do |t|
     t.integer "amount"
     t.string "catalog_no"
@@ -40,6 +40,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_09_022122) do
     t.string "kintone_record_id"
     t.integer "kintone_revision"
     t.text "note"
+    t.integer "rate_common"
+    t.integer "rate_essence"
+    t.integer "rate_f_symbol"
+    t.integer "rate_h_symbol"
+    t.integer "rate_kurashino"
+    t.integer "rate_porcelains"
+    t.integer "rate_proper"
     t.text "raw_payload"
     t.string "ship_to_name"
     t.string "staff_code"

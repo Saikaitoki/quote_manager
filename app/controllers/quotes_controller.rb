@@ -153,6 +153,13 @@ class QuotesController < ApplicationController
       :staff_name,
       :created_on,
       :note,
+      :rate_proper,
+      :rate_kurashino,
+      :rate_common,
+      :rate_essence,
+      :rate_porcelains,
+      :rate_f_symbol,
+      :rate_h_symbol,
       items_attributes: [
         :id,
         :product_cd,

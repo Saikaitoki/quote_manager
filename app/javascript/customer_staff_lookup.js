@@ -226,9 +226,7 @@ document.addEventListener("turbo:load", () => {
     });
   }
 
-  // ページロード時はキャッシュを使わず最新を取りに行くか、あるいはキャッシュさせるか。
-  // ここでは念のため force: true で取得して掛率などをセットする
-  lookupCustomer({ force: true });
+  // ページロード時の自動取得は廃止（保存された値を優先するため）
 });
 
 // ★ Turbo Cache 対策
