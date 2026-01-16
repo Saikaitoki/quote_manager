@@ -78,8 +78,8 @@ module Kintone
       )
       true
     rescue KintoneError => e
-      # revision 衝突
-      raise unless e.code == "GAIA_RECMODIFIED"
+      # revision 衝突 (GAIA_RECMODIFIED or GAIA_CO02)
+      raise unless %w[GAIA_RECMODIFIED GAIA_CO02].include?(e.code)
 
       # 強制更新
       body = mapper.to_update_payload(
